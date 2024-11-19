@@ -1,0 +1,181 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0x0",
+      "device": "xc7a100tcsg324-1",
+      "gen_directory": "../../../../project.gen/sources_1/bd/design_1",
+      "name": "design_1",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2023.2"
+    },
+    "design_tree": {
+      "blk_mem_gen_0": "",
+      "bram_controller_0": "",
+      "audio_output_0": "",
+      "play_controller_0": "",
+      "sample_timer_0": ""
+    },
+    "components": {
+      "blk_mem_gen_0": {
+        "vlnv": "xilinx.com:ip:blk_mem_gen:8.4",
+        "ip_revision": "7",
+        "xci_name": "design_1_blk_mem_gen_0_0",
+        "xci_path": "ip\\design_1_blk_mem_gen_0_0\\design_1_blk_mem_gen_0_0.xci",
+        "inst_hier_path": "blk_mem_gen_0",
+        "parameters": {
+          "use_bram_block": {
+            "value": "Stand_Alone"
+          }
+        }
+      },
+      "bram_controller_0": {
+        "vlnv": "xilinx.com:module_ref:bram_controller:1.0",
+        "ip_revision": "1",
+        "xci_name": "design_1_bram_controller_0_0",
+        "xci_path": "ip\\design_1_bram_controller_0_0\\design_1_bram_controller_0_0.xci",
+        "inst_hier_path": "bram_controller_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "bram_controller",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "address": {
+            "direction": "I",
+            "left": "12",
+            "right": "0"
+          },
+          "clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "reset": {
+            "type": "rst",
+            "direction": "I"
+          },
+          "sample_data": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          }
+        }
+      },
+      "audio_output_0": {
+        "vlnv": "xilinx.com:module_ref:audio_output:1.0",
+        "ip_revision": "1",
+        "xci_name": "design_1_audio_output_0_0",
+        "xci_path": "ip\\design_1_audio_output_0_0\\design_1_audio_output_0_0.xci",
+        "inst_hier_path": "audio_output_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "audio_output",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "sample_data": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "clk": {
+            "type": "clk",
+            "direction": "I"
+          },
+          "audio_out": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          }
+        }
+      },
+      "play_controller_0": {
+        "vlnv": "xilinx.com:module_ref:play_controller:1.0",
+        "ip_revision": "1",
+        "xci_name": "design_1_play_controller_0_0",
+        "xci_path": "ip\\design_1_play_controller_0_0\\design_1_play_controller_0_0.xci",
+        "inst_hier_path": "play_controller_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "play_controller",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "play": {
+            "direction": "I"
+          },
+          "stop": {
+            "direction": "I"
+          },
+          "clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "enable": {
+            "direction": "O"
+          },
+          "reset": {
+            "type": "rst",
+            "direction": "O"
+          }
+        }
+      },
+      "sample_timer_0": {
+        "vlnv": "xilinx.com:module_ref:sample_timer:1.0",
+        "ip_revision": "1",
+        "xci_name": "design_1_sample_timer_0_0",
+        "xci_path": "ip\\design_1_sample_timer_0_0\\design_1_sample_timer_0_0.xci",
+        "inst_hier_path": "sample_timer_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "sample_timer",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "clk": {
+            "type": "clk",
+            "direction": "I"
+          },
+          "enable": {
+            "direction": "I"
+          },
+          "sample_tick": {
+            "direction": "O"
+          }
+        }
+      }
+    },
+    "nets": {
+      "Net": {
+        "ports": [
+          "blk_mem_gen_0/addra",
+          "bram_controller_0/address"
+        ]
+      },
+      "bram_controller_0_sample_data": {
+        "ports": [
+          "bram_controller_0/sample_data",
+          "audio_output_0/sample_data"
+        ]
+      },
+      "play_controller_0_enable": {
+        "ports": [
+          "play_controller_0/enable",
+          "sample_timer_0/enable"
+        ]
+      }
+    }
+  }
+}
