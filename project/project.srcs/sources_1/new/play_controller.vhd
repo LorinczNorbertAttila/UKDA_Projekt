@@ -51,6 +51,53 @@ begin
     if rising_edge(clk) then
         current_state <= next_state;
     end if;
+	
+	process(current_state, play, stop)
+    begin
+        enable <= '0';
+        reset <= '0';
+        
+        case current_state is
+            when INIT =>
+                reset <= '1'; 
+                next_state <= RDY;
+
+            when RDY =>
+                if play = '1' then
+                    next_state <= PLAYING;
+                else
+                    next_state <= IDLE;
+                end if;
+
+            when IDLE =>
+                if play = '1' then
+                    next_state <= PLAYING;
+                elsif stop = '1' then
+                    next_state <= RESETTING;
+                else
+                    next_state <= IDLE;
+                end if;
+
+            when PLAYING =>
+                enable <= '1';
+                if stop = '1' then
+                    next_state <= STOPPING;
+                else
+                    next_state <= PLAYING;
+                end if;
+
+            when STOPPING =>
+                enable <= '0';
+                next_state <= RESETTING;
+
+            when RESETTING =>
+                reset <= '1';
+                next_state <= RDY;
+
+            when others =>
+                next_state <= INIT;
+
+        end case;
 end process;
 
 
