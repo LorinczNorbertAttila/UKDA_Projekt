@@ -39,31 +39,34 @@ end audio_output;
 
 architecture Behavioral of audio_output is
 
-type state_type is (INIT, RDY, IDLE, PROCESSING, OUTPUT);
-signal current_state, next_state : state_type;
+    -- Állapotok típusa
+    type state_type is (INIT, RDY, IDLE, PROCESSING, OUTPUT);
+    signal current_state, next_state : state_type;
 
 begin
-
-process(clk)
-begin
-    if rising_edge(clk) then
-        current_state <= next_state;
-    end if;
-end process;
-
-process(current_state)
-begin
-    case current_state is
-       WHEN RDY =>
-        next_state <= INIT;
-       WHEN INIT =>
-        next_state <= IDLE;
-       WHEN IDLE => 
-        next_state <= PROCESSING;
-       WHEN PROCESSING => 
-        next_state <= OUTPUT;
-     end case;
-end process;
+    
+    -- Állapotregiszter frissítése
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            current_state <= next_state;
+        end if;
+    end process;
+    
+    -- Állapotgép m?ködése
+    process(current_state)
+    begin
+        case current_state is
+           WHEN RDY =>
+            next_state <= INIT;
+           WHEN INIT =>
+            next_state <= IDLE;
+           WHEN IDLE => 
+            next_state <= PROCESSING;
+           WHEN PROCESSING => 
+            next_state <= OUTPUT;
+         end case;
+    end process;
 
 
 end Behavioral;

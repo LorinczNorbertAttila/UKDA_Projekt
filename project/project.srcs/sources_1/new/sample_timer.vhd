@@ -39,45 +39,49 @@ end sample_timer;
 
 architecture Behavioral of sample_timer is
 
-type state_type is (INIT, RDY, COUNTING, TICK, WAITING);
-signal current_state, next_state : state_type;
-constant max_count : integer := 2267; -- Például 100 MHz / 44.1 kHz
-signal counter : integer := 0;
+    -- Állapotok típusa
+    type state_type is (INIT, RDY, COUNTING, TICK, WAITING);
+    signal current_state, next_state : state_type;
+    
+    constant max_count : integer := 2267; -- Például 100 MHz / 44.1 kHz
+    signal counter : integer := 0;
 
 begin
-
-process(clk)
-begin
-    if rising_edge(clk) then
-        current_state <= next_state;
-    end if;
-end process;
-
-process(current_state, enable, counter)
-begin
-    case current_state is
-        when INIT =>
-            if enable = '1' then
-                next_state <= RDY;
-            else
-                next_state <= INIT;
-            end if;
-        when RDY =>
-            next_state <= COUNTING;
-        when COUNTING =>
-            if counter = max_count then
-                next_state <= TICK;
-            else
+    
+    -- Állapotregiszter frissítése
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            current_state <= next_state;
+        end if;
+    end process;
+    
+    -- Állapotgép m?ködése
+    process(current_state, enable, counter)
+    begin
+        case current_state is
+            when INIT =>
+                if enable = '1' then
+                    next_state <= RDY;
+                else
+                    next_state <= INIT;
+                end if;
+            when RDY =>
                 next_state <= COUNTING;
-            end if;
-        when TICK =>
-            next_state <= WAITING;
-        when WAITING =>
-            next_state <= COUNTING;
-        when others =>
-            next_state <= INIT;
-    end case;
-end process;
+            when COUNTING =>
+                if counter = max_count then
+                    next_state <= TICK;
+                else
+                    next_state <= COUNTING;
+                end if;
+            when TICK =>
+                next_state <= WAITING;
+            when WAITING =>
+                next_state <= COUNTING;
+            when others =>
+                next_state <= INIT;
+        end case;
+    end process;
 
 
 

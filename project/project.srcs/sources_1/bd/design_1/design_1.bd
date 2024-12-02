@@ -11,10 +11,10 @@
     },
     "design_tree": {
       "blk_mem_gen_0": "",
-      "bram_controller_0": "",
       "audio_output_0": "",
       "play_controller_0": "",
-      "sample_timer_0": ""
+      "sample_timer_0": "",
+      "bram_controller_0": ""
     },
     "components": {
       "blk_mem_gen_0": {
@@ -26,44 +26,6 @@
         "parameters": {
           "use_bram_block": {
             "value": "Stand_Alone"
-          }
-        }
-      },
-      "bram_controller_0": {
-        "vlnv": "xilinx.com:module_ref:bram_controller:1.0",
-        "ip_revision": "1",
-        "xci_name": "design_1_bram_controller_0_0",
-        "xci_path": "ip\\design_1_bram_controller_0_0\\design_1_bram_controller_0_0.xci",
-        "inst_hier_path": "bram_controller_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "bram_controller",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "address": {
-            "direction": "I",
-            "left": "12",
-            "right": "0"
-          },
-          "clk": {
-            "type": "clk",
-            "direction": "I",
-            "parameters": {
-              "ASSOCIATED_RESET": {
-                "value": "reset",
-                "value_src": "constant"
-              }
-            }
-          },
-          "reset": {
-            "type": "rst",
-            "direction": "I"
-          },
-          "sample_data": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
           }
         }
       },
@@ -155,13 +117,106 @@
             "direction": "O"
           }
         }
+      },
+      "bram_controller_0": {
+        "vlnv": "xilinx.com:module_ref:bram_controller:1.0",
+        "ip_revision": "1",
+        "xci_name": "design_1_bram_controller_0_2",
+        "xci_path": "ip\\design_1_bram_controller_0_2\\design_1_bram_controller_0_2.xci",
+        "inst_hier_path": "bram_controller_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "bram_controller",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "reset": {
+            "type": "rst",
+            "direction": "I"
+          },
+          "sample_tick": {
+            "direction": "I"
+          },
+          "write_enable": {
+            "direction": "I"
+          },
+          "write_data": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "write_address": {
+            "direction": "I",
+            "left": "12",
+            "right": "0"
+          },
+          "read_address": {
+            "direction": "I",
+            "left": "12",
+            "right": "0"
+          },
+          "douta": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "sample_data": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "addra": {
+            "direction": "O",
+            "left": "12",
+            "right": "0"
+          },
+          "dina": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "ena": {
+            "direction": "O"
+          },
+          "wea": {
+            "direction": "O"
+          }
+        }
       }
     },
     "nets": {
-      "Net": {
+      "blk_mem_gen_0_douta": {
         "ports": [
-          "blk_mem_gen_0/addra",
-          "bram_controller_0/address"
+          "blk_mem_gen_0/douta",
+          "bram_controller_0/douta"
+        ]
+      },
+      "bram_controller_0_addra": {
+        "ports": [
+          "bram_controller_0/addra",
+          "blk_mem_gen_0/addra"
+        ]
+      },
+      "bram_controller_0_dina": {
+        "ports": [
+          "bram_controller_0/dina",
+          "blk_mem_gen_0/dina"
+        ]
+      },
+      "bram_controller_0_ena": {
+        "ports": [
+          "bram_controller_0/ena",
+          "blk_mem_gen_0/ena"
         ]
       },
       "bram_controller_0_sample_data": {
@@ -170,10 +225,22 @@
           "audio_output_0/sample_data"
         ]
       },
+      "bram_controller_0_wea": {
+        "ports": [
+          "bram_controller_0/wea",
+          "blk_mem_gen_0/wea"
+        ]
+      },
       "play_controller_0_enable": {
         "ports": [
           "play_controller_0/enable",
           "sample_timer_0/enable"
+        ]
+      },
+      "sample_timer_0_sample_tick": {
+        "ports": [
+          "sample_timer_0/sample_tick",
+          "bram_controller_0/sample_tick"
         ]
       }
     }

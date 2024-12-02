@@ -18,70 +18,114 @@
 -- 
 ----------------------------------------------------------------------------------
 
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+use IEEE.NUMERIC_STD.ALL;
 
 entity bram_controller is
-    Port ( address : in STD_LOGIC_VECTOR (12 downto 0);
-           clk : in STD_LOGIC;
-           reset : in STD_LOGIC;
-           sample_data : out STD_LOGIC_VECTOR (31 downto 0));
-end bram_controller;
+    port (
+        clk         : in  STD_LOGIC;         
+        reset       : in  STD_LOGIC;         
+        sample_tick : in  STD_LOGIC;         
+        write_enable: in  STD_LOGIC;        
+        write_data  : in  STD_LOGIC_VECTOR(31 downto 0); 
+        write_address : in  STD_LOGIC_VECTOR(12 downto 0); 
+        read_address  : in  STD_LOGIC_VECTOR(12 downto 0); 
+        douta       : in  STD_LOGIC_VECTOR(31 downto 0); 
+        sample_data : out STD_LOGIC_VECTOR(31 downto 0); 
+        addra       : out STD_LOGIC_VECTOR(12 downto 0); 
+        dina        : out STD_LOGIC_VECTOR(31 downto 0); 
+        ena         : out STD_LOGIC;         
+        wea         : out STD_LOGIC);
+end entity BRAM_Controller;
 
-architecture Behavioral of bram_controller is
+architecture Behavioral of BRAM_Controller is
+    -- Állapot típus deklaráció
+    type state_type is (INIT, IDLE, WRITE, READ, OUTPUT);
+    signal state, next_state : state_type;
 
-type state_type is (INIT, RDY, IDLE, ADDRESSING, READING, OUTPUT);
-signal current_state, next_state : state_type;
-
+    -- Regiszterek az adatok tárolására
+    signal temp_sample_data : STD_LOGIC_VECTOR(31 downto 0);
 begin
 
-process(clk)
-begin
-    if rising_edge(clk) then
-        current_state <= next_state;
-    end if;
-end process;
+    -- Állapotgép folyamat
+    process (clk, reset)
+    begin
+        if reset = '1' then
+            state <= INIT;
+        elsif rising_edge(clk) then
+            state <= next_state;
+        end if;
+    end process;
 
-process(current_state, sample_tick, reset)
-begin
-    case current_state is
-        when RDY =>
-            if reset = '0' then
-                next_state <= INIT;
-            else
-                next_state <= RDY;
-            end if;
-        when INIT =>
-            if sample_tick = '1' then
-                next_state <= ADDRESSING;
-            else
-                next_state <= INIT;
-            end if;
-        when IDLE =>
-            if sample_tick = '1' then
-                next_state <= ADDRESSING;
-            else
+    -- Következ? állapot logika
+    process (state, sample_tick, write_enable)
+    begin
+        -- Alapértékek
+        next_state <= state;
+        
+        case state is
+            when INIT =>
                 next_state <= IDLE;
-            end if;
-        when ADDRESSING =>
-            next_state <= READING;
-        when READING =>
-            next_state <= OUTPUT;
-        when OUTPUT =>
-            next_state <= IDLE;
-        when others =>
-            next_state <= INIT;
-    end case;
-end process;
 
-end Behavioral;
+            when IDLE =>
+                if write_enable = '1' then
+                    next_state <= WRITE;
+                elsif sample_tick = '1' then
+                    next_state <= READ;
+                end if;
+
+            when WRITE =>
+                next_state <= IDLE;
+
+            when READ =>
+                next_state <= OUTPUT;
+
+            when OUTPUT =>
+                next_state <= IDLE;
+
+            when others =>
+                next_state <= IDLE;
+        end case;
+    end process;
+
+    -- Kimeneti logika
+    process (state, write_data, write_address, read_address, douta)
+    begin
+        -- Alapértékek
+        ena <= '0';
+        wea <= '0';
+        addra <= (others => '0');
+        dina <= (others => '0');
+        sample_data <= (others => '0');
+        
+        case state is
+            when INIT =>
+                temp_sample_data <= (others => '0');
+
+            when IDLE =>
+                -- Nincs m?velet
+                null;
+
+            when WRITE =>
+                ena <= '1';
+                wea <= '1';
+                addra <= write_address;
+                dina <= write_data;
+
+            when READ =>
+                ena <= '1';
+                wea <= '0';
+                addra <= read_address;
+
+            when OUTPUT =>
+                temp_sample_data <= douta; -- Adat mentése regiszterbe
+                sample_data <= douta;     -- Kiadás a sample_data vonalra
+
+            when others =>
+                null;
+        end case;
+    end process;
+
+end architecture Behavioral;
+

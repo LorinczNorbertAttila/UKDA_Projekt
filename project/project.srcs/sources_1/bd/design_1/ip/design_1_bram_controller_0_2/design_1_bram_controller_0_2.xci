@@ -1,14 +1,14 @@
 {
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
-    "xci_name": "design_1_audio_output_0_0",
-    "cell_name": "audio_output_0",
-    "component_reference": "xilinx.com:module_ref:audio_output:1.0",
+    "xci_name": "design_1_bram_controller_0_2",
+    "cell_name": "bram_controller_0",
+    "component_reference": "xilinx.com:module_ref:bram_controller:1.0",
     "ip_revision": "1",
-    "gen_directory": "../../../../../../project.gen/sources_1/bd/design_1/ip/design_1_audio_output_0_0",
+    "gen_directory": "../../../../../../project.gen/sources_1/bd/design_1/ip/design_1_bram_controller_0_2",
     "parameters": {
       "component_parameters": {
-        "Component_Name": [ { "value": "design_1_audio_output_0_0", "resolve_type": "user", "usage": "all" } ]
+        "Component_Name": [ { "value": "design_1_bram_controller_0_2", "resolve_type": "user", "usage": "all" } ]
       },
       "project_parameters": {
         "ARCHITECTURE": [ { "value": "artix7" } ],
@@ -27,7 +27,7 @@
         "IPCONTEXT": [ { "value": "IP_Integrator" } ],
         "IPREVISION": [ { "value": "1" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../../../project.gen/sources_1/bd/design_1/ip/design_1_audio_output_0_0" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../project.gen/sources_1/bd/design_1/ip/design_1_bram_controller_0_2" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "../../ipshared" } ],
         "SWVERSION": [ { "value": "2023.2" } ],
@@ -36,23 +36,45 @@
     },
     "boundary": {
       "ports": {
-        "sample_data": [ { "direction": "in", "size_left": "31", "size_right": "0" } ],
         "clk": [ { "direction": "in" } ],
-        "audio_out": [ { "direction": "out", "size_left": "31", "size_right": "0" } ]
+        "reset": [ { "direction": "in" } ],
+        "sample_tick": [ { "direction": "in" } ],
+        "write_enable": [ { "direction": "in" } ],
+        "write_data": [ { "direction": "in", "size_left": "31", "size_right": "0" } ],
+        "write_address": [ { "direction": "in", "size_left": "12", "size_right": "0" } ],
+        "read_address": [ { "direction": "in", "size_left": "12", "size_right": "0" } ],
+        "douta": [ { "direction": "in", "size_left": "31", "size_right": "0" } ],
+        "sample_data": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
+        "addra": [ { "direction": "out", "size_left": "12", "size_right": "0" } ],
+        "dina": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
+        "ena": [ { "direction": "out" } ],
+        "wea": [ { "direction": "out" } ]
       },
       "interfaces": {
+        "reset": {
+          "vlnv": "xilinx.com:signal:reset:1.0",
+          "abstraction_type": "xilinx.com:signal:reset_rtl:1.0",
+          "mode": "slave",
+          "parameters": {
+            "POLARITY": [ { "value": "ACTIVE_LOW", "value_permission": "bd_and_user", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
+          },
+          "port_maps": {
+            "RST": [ { "physical_name": "reset" } ]
+          }
+        },
         "clk": {
           "vlnv": "xilinx.com:signal:clock:1.0",
           "abstraction_type": "xilinx.com:signal:clock_rtl:1.0",
           "mode": "slave",
           "parameters": {
+            "ASSOCIATED_RESET": [ { "value": "reset", "value_src": "constant", "value_permission": "bd_and_user", "usage": "all" } ],
             "FREQ_HZ": [ { "value": "100000000", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "FREQ_TOLERANCE_HZ": [ { "value": "0", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "PHASE": [ { "value": "0.0", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
             "CLK_DOMAIN": [ { "value": "", "value_permission": "bd_and_user", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "ASSOCIATED_BUSIF": [ { "value": "", "value_permission": "bd_and_user", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "ASSOCIATED_PORT": [ { "value": "", "value_permission": "bd_and_user", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
-            "ASSOCIATED_RESET": [ { "value": "", "value_permission": "bd_and_user", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
           },
           "port_maps": {
