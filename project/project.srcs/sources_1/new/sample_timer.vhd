@@ -83,6 +83,30 @@ begin
         end case;
     end process;
 
-
+    -- Számláló m?ködése
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if current_state = COUNTING then
+                if counter = max_count then
+                    counter <= 0; -- Ha eléri a max értéket akkor lenullázzuk
+                else
+                    counter <= counter + 1;
+                end if;
+            else
+                counter <= 0;
+            end if;
+        end if;
+    end process;
+    
+    -- sample tick jel generálása
+    process(current_state)
+    begin
+        if current_state = TICK then
+            sample_tick <= '1';
+        else
+            sample_tick <= '0';
+        end if;
+    end process;
 
 end Behavioral;

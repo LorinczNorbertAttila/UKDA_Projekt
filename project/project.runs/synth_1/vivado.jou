@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2023.2 (64-bit)
+# SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
+# IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Start of session at: Tue Dec  3 11:11:26 2024
+# Process ID: 10652
+# Current directory: C:/Diak/LorinczNorbert/UKDA/project/project.runs/synth_1
+# Command line: vivado.exe -log audio_output.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source audio_output.tcl
+# Log file: C:/Diak/LorinczNorbert/UKDA/project/project.runs/synth_1/audio_output.vds
+# Journal file: C:/Diak/LorinczNorbert/UKDA/project/project.runs/synth_1\vivado.jou
+# Running On: 309x6, OS: Windows, CPU Frequency: 2904 MHz, CPU Physical cores: 6, Host memory: 16949 MB
+#-----------------------------------------------------------
+source audio_output.tcl -notrace

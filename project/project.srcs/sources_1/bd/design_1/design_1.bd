@@ -24,6 +24,9 @@
         "xci_path": "ip\\design_1_blk_mem_gen_0_0\\design_1_blk_mem_gen_0_0.xci",
         "inst_hier_path": "blk_mem_gen_0",
         "parameters": {
+          "Load_Init_File": {
+            "value": "false"
+          },
           "use_bram_block": {
             "value": "Stand_Alone"
           }
@@ -195,6 +198,14 @@
       }
     },
     "nets": {
+      "Net": {
+        "ports": [
+          "play_controller_0/clk",
+          "bram_controller_0/clk",
+          "sample_timer_0/clk",
+          "audio_output_0/clk"
+        ]
+      },
       "blk_mem_gen_0_douta": {
         "ports": [
           "blk_mem_gen_0/douta",

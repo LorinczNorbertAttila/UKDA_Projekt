@@ -42,6 +42,7 @@ architecture Behavioral of audio_output is
     -- Állapotok típusa
     type state_type is (INIT, RDY, IDLE, PROCESSING, OUTPUT);
     signal current_state, next_state : state_type;
+    signal temp_data : STD_LOGIC_VECTOR(31 downto 0); -- Ideiglenes tároló az adatokhoz
 
 begin
     
@@ -56,17 +57,37 @@ begin
     -- Állapotgép m?ködése
     process(current_state)
     begin
+        -- Alapértelmezett értékek
+        audio_out <= (others => '0');  
+        temp_data <= (others => '0');
+
         case current_state is
-           WHEN RDY =>
-            next_state <= INIT;
-           WHEN INIT =>
-            next_state <= IDLE;
-           WHEN IDLE => 
-            next_state <= PROCESSING;
-           WHEN PROCESSING => 
-            next_state <= OUTPUT;
-         end case;
+            
+            when INIT =>
+                next_state <= IDLE;
+        
+            when RDY => 
+                if sample_data /= X"00000000" then
+                    next_state <= IDLE;
+                else
+                    next_state <= RDY;
+                end if;
+                
+            when IDLE => 
+                temp_data <= sample_data;
+                next_state <= PROCESSING;
+                
+            when PROCESSING => 
+                next_state <= OUTPUT;
+                
+            when OUTPUT =>
+                audio_out <= temp_data;
+                next_state <= INIT;  
+                
+        end case;
     end process;
+
+
 
 
 end Behavioral;

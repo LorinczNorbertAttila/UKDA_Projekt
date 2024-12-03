@@ -104,7 +104,7 @@ begin
                 temp_sample_data <= (others => '0');
 
             when IDLE =>
-                -- Nincs m?velet
+                -- Nincs müvelet
                 null;
 
             when WRITE =>
