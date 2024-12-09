@@ -38,6 +38,7 @@
       "ports": {
         "play": [ { "direction": "in" } ],
         "stop": [ { "direction": "in" } ],
+        "pause": [ { "direction": "in" } ],
         "clk": [ { "direction": "in" } ],
         "enable": [ { "direction": "out" } ],
         "reset": [ { "direction": "out" } ]

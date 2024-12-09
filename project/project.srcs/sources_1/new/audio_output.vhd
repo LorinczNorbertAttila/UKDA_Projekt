@@ -34,13 +34,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity audio_output is
     Port ( sample_data : in STD_LOGIC_VECTOR (31 downto 0);
            clk : in STD_LOGIC;
+           reset: in STD_LOGIC;
            audio_out : out STD_LOGIC_VECTOR (31 downto 0));
 end audio_output;
 
 architecture Behavioral of audio_output is
 
     -- Állapotok típusa
-    type state_type is (INIT, RDY, IDLE, PROCESSING, OUTPUT);
+    type state_type is (INIT, RDY, PROCESSING, OUTPUT);
     signal current_state, next_state : state_type;
     signal temp_data : STD_LOGIC_VECTOR(31 downto 0); -- Ideiglenes tároló az adatokhoz
 
@@ -50,12 +51,16 @@ begin
     process(clk)
     begin
         if rising_edge(clk) then
-            current_state <= next_state;
+            if reset = '1' then
+                current_state <= INIT;
+            else
+                current_state <= next_state;
+            end if;
         end if;
     end process;
     
     -- Állapotgép m?ködése
-    process(current_state)
+    process(current_state, sample_data)
     begin
         -- Alapértelmezett értékek
         audio_out <= (others => '0');  
@@ -64,20 +69,17 @@ begin
         case current_state is
             
             when INIT =>
-                next_state <= IDLE;
+                next_state <= RDY;
         
             when RDY => 
                 if sample_data /= X"00000000" then
-                    next_state <= IDLE;
+                    next_state <= OUTPUT;
                 else
                     next_state <= RDY;
                 end if;
                 
-            when IDLE => 
-                temp_data <= sample_data;
-                next_state <= PROCESSING;
-                
             when PROCESSING => 
+                temp_data <= sample_data;
                 next_state <= OUTPUT;
                 
             when OUTPUT =>

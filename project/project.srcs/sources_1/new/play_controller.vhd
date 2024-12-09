@@ -34,6 +34,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity play_controller is
     Port ( play : in STD_LOGIC;
            stop : in STD_LOGIC;
+           pause  : in STD_LOGIC;
            clk : in STD_LOGIC;
            enable : out STD_LOGIC;
            reset : out STD_LOGIC);
@@ -42,7 +43,7 @@ end play_controller;
 architecture Behavioral of play_controller is
 
     -- Állapotok típusa
-    type state_type is (INIT, RDY, IDLE, PLAYING, STOPPING, RESETTING);
+    type state_type is (INIT, RDY, IDLE, PLAYING, STOPPING, PAUSED, RESETTING);
     signal current_state, next_state : state_type;
 
 begin
@@ -56,7 +57,7 @@ begin
     end process;
 	
 	-- Állapotgép m?ködése
-    process(current_state, play, stop)
+    process(current_state, play, stop, pause)
     begin
         --Kezd? értékek
         enable <= '0';
@@ -70,6 +71,8 @@ begin
             when RDY =>
                 if play = '1' then
                     next_state <= PLAYING;
+                elsif stop = '1' then
+                    next_state <= RESETTING;
                 else
                     next_state <= IDLE;
                 end if;
@@ -84,15 +87,27 @@ begin
                 end if;
     
             when PLAYING =>
-                enable <= '1';
+                enable <= '1'; --Lejátszás indítása
                 if stop = '1' then
                     next_state <= STOPPING;
+                elsif pause = '1' then
+                    next_state <= PAUSED;
                 else
                     next_state <= PLAYING;
                 end if;
+                
+            when PAUSED =>
+                enable <= '0'; --Lejátszás szüneteltetése
+                if stop = '1' then
+                    next_state <= RESETTING;
+                elsif play = '1' then
+                    next_state <= PLAYING;
+                else
+                    next_state <= PAUSED;
+                end if;
     
             when STOPPING =>
-                enable <= '0';
+                enable <= '0'; --Lejátszás megállítása
                 next_state <= RESETTING;
     
             when RESETTING =>

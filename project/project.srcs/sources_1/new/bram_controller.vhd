@@ -100,13 +100,6 @@ begin
         sample_data <= (others => '0');
         
         case state is
-            when INIT =>
-                temp_sample_data <= (others => '0');
-
-            when IDLE =>
-                -- Nincs müvelet
-                null;
-
             when WRITE =>
                 ena <= '1';
                 wea <= '1';
@@ -119,11 +112,11 @@ begin
                 addra <= read_address;
 
             when OUTPUT =>
-                temp_sample_data <= douta; -- Adat mentése regiszterbe
                 sample_data <= douta;     -- Kiadás a sample_data vonalra
 
             when others =>
-                null;
+                ena <= '0';
+                wea <= '0';
         end case;
     end process;
 

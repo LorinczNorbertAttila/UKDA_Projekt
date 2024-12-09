@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -34,17 +35,18 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity sample_timer is
     Port ( clk : in STD_LOGIC;
            enable : in STD_LOGIC;
+           reset: in STD_LOGIC;
            sample_tick : out STD_LOGIC);
 end sample_timer;
 
 architecture Behavioral of sample_timer is
 
     -- Állapotok típusa
-    type state_type is (INIT, RDY, COUNTING, TICK, WAITING);
+    type state_type is (INIT, RDY, COUNTING, TICK);
     signal current_state, next_state : state_type;
     
-    constant max_count : integer := 2267; -- Például 100 MHz / 44.1 kHz
-    signal counter : integer := 0;
+    constant max_count : integer:= 2267; -- Például 100 MHz / 44.1 kHz
+    signal counter :  unsigned(11 downto 0) := (others => '0');
 
 begin
     
@@ -52,7 +54,11 @@ begin
     process(clk)
     begin
         if rising_edge(clk) then
-            current_state <= next_state;
+            if reset = '1' then
+                current_state <= INIT;
+            else
+                current_state <= next_state;
+            end if;
         end if;
     end process;
     
@@ -75,8 +81,6 @@ begin
                     next_state <= COUNTING;
                 end if;
             when TICK =>
-                next_state <= WAITING;
-            when WAITING =>
                 next_state <= COUNTING;
             when others =>
                 next_state <= INIT;
@@ -88,13 +92,13 @@ begin
     begin
         if rising_edge(clk) then
             if current_state = COUNTING then
-                if counter = max_count then
-                    counter <= 0; -- Ha eléri a max értéket akkor lenullázzuk
+                if counter = to_unsigned(max_count, counter'length) then
+                    counter <= (others => '0'); -- Ha eléri a max értéket akkor lenullázzuk
                 else
                     counter <= counter + 1;
                 end if;
             else
-                counter <= 0;
+                counter <= (others => '0');
             end if;
         end if;
     end process;

@@ -1,10 +1,10 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.2 (win64) Build 4029153 Fri Oct 13 20:14:34 MDT 2023
-| Date         : Tue Dec  3 11:11:56 2024
-| Host         : 309x6 running 64-bit major release  (build 9200)
-| Command      : report_utilization -file audio_output_utilization_synth.rpt -pb audio_output_utilization_synth.pb
-| Design       : audio_output
+| Date         : Mon Dec  9 19:01:51 2024
+| Host         : Norbi-PC running 64-bit major release  (build 9200)
+| Command      : report_utilization -file top_modul_utilization_synth.rpt -pb top_modul_utilization_synth.pb
+| Design       : top_modul
 | Device       : xc7a100tcsg324-1
 | Speed File   : -1
 | Design State : Synthesized

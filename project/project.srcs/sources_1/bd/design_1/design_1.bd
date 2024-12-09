@@ -51,6 +51,16 @@
           },
           "clk": {
             "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "reset": {
+            "type": "rst",
             "direction": "I"
           },
           "audio_out": {
@@ -76,6 +86,9 @@
             "direction": "I"
           },
           "stop": {
+            "direction": "I"
+          },
+          "pause": {
             "direction": "I"
           },
           "clk": {
@@ -111,9 +124,19 @@
         "ports": {
           "clk": {
             "type": "clk",
-            "direction": "I"
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "reset",
+                "value_src": "constant"
+              }
+            }
           },
           "enable": {
+            "direction": "I"
+          },
+          "reset": {
+            "type": "rst",
             "direction": "I"
           },
           "sample_tick": {
@@ -200,9 +223,9 @@
     "nets": {
       "Net": {
         "ports": [
-          "play_controller_0/clk",
           "bram_controller_0/clk",
           "sample_timer_0/clk",
+          "play_controller_0/clk",
           "audio_output_0/clk"
         ]
       },
