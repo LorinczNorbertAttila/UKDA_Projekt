@@ -84,6 +84,7 @@ set_property ip_output_repo {c:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.fel
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
+add_files c:/Users/norbe/Downloads/SANDELA.coe
 read_vhdl -library xil_defaultlib {
   {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/audio_output.vhd}
   {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/bram_controller.vhd}

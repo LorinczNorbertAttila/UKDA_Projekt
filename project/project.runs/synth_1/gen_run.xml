@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1733763685" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/audio_output.dcp">
+<GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1734376029" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/audio_output.dcp">
   <File Type="PA-TCL" Name="top_modul.tcl"/>
   <File Type="RDS-PROPCONSTRS" Name="top_modul_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="top_modul_reports.tcl"/>
@@ -46,6 +46,12 @@
         <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../../../../Users/norbe/Downloads/SANDELA.coe">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
