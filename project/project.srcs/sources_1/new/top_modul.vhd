@@ -43,28 +43,40 @@ end top_modul;
 architecture Behavioral of top_modul is
 
 -- Komponens deklarációk
+    component blk_mem_gen_0
+        port (
+            clka : in  STD_LOGIC;
+            ena : in  STD_LOGIC;
+            wea : in  STD_LOGIC;
+            addra : in  STD_LOGIC_VECTOR(12 downto 0);
+            dina : in  STD_LOGIC_VECTOR(31 downto 0);
+            douta : out STD_LOGIC_VECTOR(31 downto 0)
+        );
+    end component;
+    
     component bram_controller
         port (
-            clk          : in  STD_LOGIC;
-            reset        : in  STD_LOGIC;
-            sample_tick  : in  STD_LOGIC;
+            clk : in  STD_LOGIC;
+            reset : in  STD_LOGIC;
+            sample_tick : in  STD_LOGIC;
             write_enable : in  STD_LOGIC;
-            write_data   : in  STD_LOGIC_VECTOR(31 downto 0);
+            write_data : in  STD_LOGIC_VECTOR(31 downto 0);
             write_address: in  STD_LOGIC_VECTOR(12 downto 0);
             read_address : in  STD_LOGIC_VECTOR(12 downto 0);
-            douta        : in  STD_LOGIC_VECTOR(31 downto 0);
-            sample_data  : out STD_LOGIC_VECTOR(31 downto 0);
-            addra        : out STD_LOGIC_VECTOR(12 downto 0);
-            dina         : out STD_LOGIC_VECTOR(31 downto 0);
-            ena          : out STD_LOGIC;
-            wea          : out STD_LOGIC
+            douta : in  STD_LOGIC_VECTOR(31 downto 0);
+            sample_data : out STD_LOGIC_VECTOR(31 downto 0);
+            addra : out STD_LOGIC_VECTOR(12 downto 0);
+            dina : out STD_LOGIC_VECTOR(31 downto 0);
+            ena : out STD_LOGIC;
+            wea : out STD_LOGIC
         );
     end component;
 
     component sample_timer
         port (
-            clk         : in  STD_LOGIC;
-            enable      : in  STD_LOGIC;
+            clk : in  STD_LOGIC;
+            enable : in  STD_LOGIC;
+            reset : in STD_LOGIC;
             sample_tick : out STD_LOGIC
         );
     end component;
@@ -72,74 +84,85 @@ architecture Behavioral of top_modul is
     component audio_output
         port (
             sample_data : in  STD_LOGIC_VECTOR(31 downto 0);
-            clk         : in  STD_LOGIC;
-            audio_out   : out STD_LOGIC_VECTOR(31 downto 0)
+            clk : in  STD_LOGIC;
+            audio_out : out STD_LOGIC_VECTOR(31 downto 0)
         );
     end component;
 
     component play_controller
         port (
-            play   : in  STD_LOGIC;
-            stop   : in  STD_LOGIC;
-            pause  : in  STD_LOGIC;
-            clk    : in  STD_LOGIC;
+            play : in  STD_LOGIC;
+            stop : in  STD_LOGIC;
+            pause : in  STD_LOGIC;
+            clk : in  STD_LOGIC;
             enable : out STD_LOGIC;
             reset  : out STD_LOGIC
         );
     end component;
 
     -- Bels? jelek
-    signal enable_signal    : STD_LOGIC;
-    signal reset_signal     : STD_LOGIC;
-    signal sample_tick      : STD_LOGIC;
+    signal enable_signal : STD_LOGIC;
+    signal reset_signal : STD_LOGIC;
+    signal sample_tick : STD_LOGIC;
     signal bram_sample_data : STD_LOGIC_VECTOR(31 downto 0);
-    signal douta_signal     : STD_LOGIC_VECTOR(31 downto 0);
-    signal addra_signal     : STD_LOGIC_VECTOR(12 downto 0);
-    signal dina_signal      : STD_LOGIC_VECTOR(31 downto 0);
-    signal ena_signal       : STD_LOGIC;
-    signal wea_signal       : STD_LOGIC;
+    signal douta_signal : STD_LOGIC_VECTOR(31 downto 0);
+    signal addra_signal : STD_LOGIC_VECTOR(12 downto 0);
+    signal dina_signal : STD_LOGIC_VECTOR(31 downto 0);
+    signal ena_signal : STD_LOGIC;
+    signal wea_signal : STD_LOGIC;
 
 begin
 
     playing : play_controller
         port map (
-            play   => play,
-            stop   => stop,
-            pause  => pause,
-            clk    => clk,
+            play => play,
+            stop => stop,
+            pause => pause,
+            clk => clk,
             enable => enable_signal,
-            reset  => reset_signal
+            reset => reset_signal
         );
 
     timer : sample_timer
         port map (
-            clk         => clk,
-            enable      => enable_signal,
+            clk => clk,
+            enable => enable_signal,
+            reset => reset_signal,
             sample_tick => sample_tick
         );
 
     read : bram_controller
         port map (
-            clk          => clk,
-            reset        => reset_signal,
-            sample_tick  => sample_tick,
+            clk => clk,
+            reset => reset_signal,
+            sample_tick => sample_tick,
             write_enable => '0',
-            write_data   => (others => '0'),
-            write_address=> (others => '0'),
+            write_data => (others => '0'),
+            write_address => (others => '0'),
             read_address => read_address,
-            douta        => douta_signal,
-            sample_data  => bram_sample_data,
-            addra        => addra_signal,
-            dina         => dina_signal,
-            ena          => ena_signal,
-            wea          => wea_signal
+            douta => douta_signal,
+            sample_data => bram_sample_data,
+            addra => addra_signal,
+            dina => dina_signal,
+            ena => ena_signal,
+            wea => wea_signal
         );
+        
+    bram : blk_mem_gen_0
+        port map (
+            clka => clk,
+            ena => ena_signal,
+            wea => wea_signal,
+            addra => addra_signal,
+            dina => dina_signal,
+            douta => douta_signal
+        );  
 
     audio : audio_output
         port map (
             sample_data => bram_sample_data,
-            clk         => clk,
-            audio_out   => audio_out
+            clk => clk,
+            audio_out => audio_out
         );
 
 

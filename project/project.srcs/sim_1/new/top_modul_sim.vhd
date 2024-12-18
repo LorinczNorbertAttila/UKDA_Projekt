@@ -40,18 +40,20 @@ architecture Behavioral of top_module_sim is
 
     component top_module
         port (
-            clk       : in  STD_LOGIC;
-            reset     : in  STD_LOGIC;
-            play      : in  STD_LOGIC;
-            stop      : in  STD_LOGIC;
+            clk : in  STD_LOGIC;
+            reset : in  STD_LOGIC;
+            play : in  STD_LOGIC;
+            stop : in  STD_LOGIC;
+            pause : in STD_LOGIC;
             audio_out : out STD_LOGIC_VECTOR(31 downto 0)
         );
     end component;
 
-    signal clk_sim       : STD_LOGIC := '0';
-    signal reset_sim     : STD_LOGIC := '0';
-    signal play_sim      : STD_LOGIC := '0';
-    signal stop_sim      : STD_LOGIC := '0';
+    signal clk_sim : STD_LOGIC := '0';
+    signal reset_sim : STD_LOGIC := '0';
+    signal play_sim : STD_LOGIC := '0';
+    signal stop_sim : STD_LOGIC := '0';
+    signal pause_sim : STD_LOGIC := '0';
     signal audio_out_sim : STD_LOGIC_VECTOR(31 downto 0);
 
     constant clk_period : time := 10 ns;
@@ -60,10 +62,11 @@ begin
 
     UUT: top_module
         port map (
-            clk       => clk_sim,
-            reset     => reset_sim,
-            play      => play_sim,
-            stop      => stop_sim,
+            clk => clk_sim,
+            reset => reset_sim,
+            play => play_sim,
+            stop => stop_sim,
+            pause => pause_sim,
             audio_out => audio_out_sim
         );
 
@@ -85,7 +88,13 @@ begin
 
         play_sim <= '1';
         wait for 100 ns;
-
+        
+        pause_sim <= '1';
+        wait for 50 ns;
+        
+        play_sim <= '1';
+        wait for 50 ns;
+        
         stop_sim <= '1';
         wait for 50 ns;
 

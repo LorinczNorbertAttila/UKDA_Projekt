@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.runs/synth_1/top_modul.tcl"
+  variable script "C:/Diak/LorinczNorbert/UKDA/project/project.runs/synth_1/top_modul.tcl"
   variable category "vivado_synth"
 }
 
@@ -76,21 +76,21 @@ create_project -in_memory -part xc7a100tcsg324-1
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.cache/wt} [current_project]
-set_property parent.project_path {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.xpr} [current_project]
+set_property webtalk.parent_dir C:/Diak/LorinczNorbert/UKDA/project/project.cache/wt [current_project]
+set_property parent.project_path C:/Diak/LorinczNorbert/UKDA/project/project.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
-set_property ip_output_repo {c:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.cache/ip} [current_project]
+set_property ip_output_repo c:/Diak/LorinczNorbert/UKDA/project/project.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-add_files c:/Users/norbe/Downloads/SANDELA.coe
+add_files c:/Diak/LorinczNorbert/UKDA/sandela.coe
 read_vhdl -library xil_defaultlib {
-  {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/audio_output.vhd}
-  {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/bram_controller.vhd}
-  {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/play_controller.vhd}
-  {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/sample_timer.vhd}
-  {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/top_modul.vhd}
+  C:/Diak/LorinczNorbert/UKDA/project/project.srcs/sources_1/new/audio_output.vhd
+  C:/Diak/LorinczNorbert/UKDA/project/project.srcs/sources_1/new/bram_controller.vhd
+  C:/Diak/LorinczNorbert/UKDA/project/project.srcs/sources_1/new/play_controller.vhd
+  C:/Diak/LorinczNorbert/UKDA/project/project.srcs/sources_1/new/sample_timer.vhd
+  C:/Diak/LorinczNorbert/UKDA/project/project.srcs/sources_1/new/top_modul.vhd
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -103,7 +103,7 @@ foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
 }
 set_param ips.enableIPCacheLiteLoad 1
 
-read_checkpoint -auto_incremental -incremental {C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/utils_1/imports/synth_1/audio_output.dcp}
+read_checkpoint -auto_incremental -incremental C:/Diak/LorinczNorbert/UKDA/project/project.srcs/utils_1/imports/synth_1/audio_output.dcp
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }

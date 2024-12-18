@@ -25,7 +25,10 @@
         "inst_hier_path": "blk_mem_gen_0",
         "parameters": {
           "Coe_File": {
-            "value": "../../../../../../../../../../../Users/norbe/Downloads/SANDELA.coe"
+            "value": "../../../../../../../sandela.coe"
+          },
+          "Fill_Remaining_Memory_Locations": {
+            "value": "false"
           },
           "Load_Init_File": {
             "value": "true"
@@ -226,10 +229,11 @@
     "nets": {
       "Net": {
         "ports": [
+          "audio_output_0/clk",
           "sample_timer_0/clk",
           "play_controller_0/clk",
-          "audio_output_0/clk",
-          "bram_controller_0/clk"
+          "bram_controller_0/clk",
+          "blk_mem_gen_0/clka"
         ]
       },
       "blk_mem_gen_0_douta": {
@@ -244,6 +248,12 @@
           "blk_mem_gen_0/addra"
         ]
       },
+      "bram_controller_0_dina": {
+        "ports": [
+          "bram_controller_0/dina",
+          "blk_mem_gen_0/dina"
+        ]
+      },
       "bram_controller_0_ena": {
         "ports": [
           "bram_controller_0/ena",
@@ -254,6 +264,12 @@
         "ports": [
           "bram_controller_0/sample_data",
           "audio_output_0/sample_data"
+        ]
+      },
+      "bram_controller_0_wea": {
+        "ports": [
+          "bram_controller_0/wea",
+          "blk_mem_gen_0/wea"
         ]
       },
       "play_controller_0_enable": {

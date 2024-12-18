@@ -24,24 +24,24 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity bram_controller is
     port (
-        clk         : in  STD_LOGIC;         
-        reset       : in  STD_LOGIC;         
+        clk : in  STD_LOGIC;         
+        reset : in  STD_LOGIC;         
         sample_tick : in  STD_LOGIC;         
         write_enable: in  STD_LOGIC;        
-        write_data  : in  STD_LOGIC_VECTOR(31 downto 0); 
+        write_data : in  STD_LOGIC_VECTOR(31 downto 0); 
         write_address : in  STD_LOGIC_VECTOR(12 downto 0); 
-        read_address  : in  STD_LOGIC_VECTOR(12 downto 0); 
-        douta       : in  STD_LOGIC_VECTOR(31 downto 0); 
+        read_address : in  STD_LOGIC_VECTOR(12 downto 0); 
+        douta : in  STD_LOGIC_VECTOR(31 downto 0); 
         sample_data : out STD_LOGIC_VECTOR(31 downto 0); 
-        addra       : out STD_LOGIC_VECTOR(12 downto 0); 
-        dina        : out STD_LOGIC_VECTOR(31 downto 0); 
-        ena         : out STD_LOGIC;         
-        wea         : out STD_LOGIC);
+        addra : out STD_LOGIC_VECTOR(12 downto 0); 
+        dina : out STD_LOGIC_VECTOR(31 downto 0); 
+        ena : out STD_LOGIC;         
+        wea  : out STD_LOGIC);
 end entity BRAM_Controller;
 
 architecture Behavioral of BRAM_Controller is
     -- Állapot típus deklaráció
-    type state_type is (INIT, IDLE, WRITE, READ, OUTPUT);
+    type state_type is (INIT, IDLE, WRITE, READ, READ_WAIT, OUTPUT);
     signal state, next_state : state_type;
 
     -- Regiszterek az adatok tárolására
@@ -79,6 +79,9 @@ begin
                 next_state <= IDLE;
 
             when READ =>
+                next_state <= READ_WAIT;
+            
+            when READ_WAIT =>
                 next_state <= OUTPUT;
 
             when OUTPUT =>
@@ -110,6 +113,9 @@ begin
                 ena <= '1';
                 wea <= '0';
                 addra <= read_address;
+                
+            when READ_WAIT => 
+                ena <= '1';
 
             when OUTPUT =>
                 sample_data <= douta;     -- Kiadás a sample_data vonalra

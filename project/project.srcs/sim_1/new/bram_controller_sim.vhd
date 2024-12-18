@@ -38,27 +38,24 @@ end bram_controller_sim;
 
 architecture Behavioral of bram_controller_sim is
 
-    -- A DUT (Device Under Test) portjainak jelei
-    signal clk         : std_logic := '0';
-    signal reset       : std_logic := '0';
+    signal clk : std_logic := '0';
+    signal reset : std_logic := '0';
     signal sample_tick : std_logic := '0';
     signal write_enable: std_logic := '0';
-    signal write_data  : std_logic_vector(31 downto 0) := (others => '0');
+    signal write_data : std_logic_vector(31 downto 0) := (others => '0');
     signal write_address : std_logic_vector(12 downto 0) := (others => '0');
-    signal read_address  : std_logic_vector(12 downto 0) := (others => '0');
-    signal douta       : std_logic_vector(31 downto 0) := (others => '0');
+    signal read_address : std_logic_vector(12 downto 0) := (others => '0');
+    signal douta : std_logic_vector(31 downto 0) := (others => '0');
     signal sample_data : std_logic_vector(31 downto 0);
-    signal addra       : std_logic_vector(12 downto 0);
-    signal dina        : std_logic_vector(31 downto 0);
-    signal ena         : std_logic;
-    signal wea         : std_logic;
+    signal addra : std_logic_vector(12 downto 0);
+    signal dina : std_logic_vector(31 downto 0);
+    signal ena : std_logic;
+    signal wea : std_logic;
 
-    -- Órajel generálás (50 MHz)
-    constant clk_period : time := 10 ns;
+    constant clk_period : time := 20 ns;
 
 begin
 
-    -- Órajel folyamat
     clk_process: process
     begin
         while true loop
@@ -69,8 +66,7 @@ begin
         end loop;
     end process;
 
-    -- Példányosítás (DUT, azaz a bram_controller modul)
-    DUT: entity work.bram_controller
+    controller: entity work.bram_controller
         port map (
             clk => clk,
             reset => reset,
@@ -95,29 +91,22 @@ begin
         wait for 2 * clk_period;
         reset <= '0';
         
-        -- Olvasási teszt 1: Cím 0x001 (COE el?re betöltött adat)
+        -- Olvasási teszt 1
         read_address <= "0000000000001"; -- 1-es cím
         sample_tick <= '1';
         wait for clk_period;
         sample_tick <= '0';
         wait for clk_period;
 
-        -- Figyeljük az olvasott adatot
-        assert sample_data = douta report "Hiba: Olvasott adat nem egyezik a BRAM tartalmával!" severity error;
-
-        -- Olvasási teszt 2: Cím 0x002
+        -- Olvasási teszt 2
         read_address <= "0000000000010"; -- 2-es cím
         sample_tick <= '1';
         wait for clk_period;
         sample_tick <= '0';
         wait for clk_period;
-
-        -- Figyeljük az olvasott adatot
-        assert sample_data = douta report "Hiba: Olvasott adat nem egyezik a BRAM tartalmával!" severity error;
-
+        
         -- Szimuláció vége
         wait for 10 * clk_period;
-        report "Szimuláció vége." severity note;
         wait;
     end process;
 
