@@ -36,7 +36,7 @@ entity bram_controller is
         addra : out STD_LOGIC_VECTOR(12 downto 0); 
         dina : out STD_LOGIC_VECTOR(31 downto 0); 
         ena : out STD_LOGIC;         
-        wea  : out STD_LOGIC);
+        wea  : out STD_LOGIC_VECTOR(0 downto 0));
 end entity BRAM_Controller;
 
 architecture Behavioral of BRAM_Controller is
@@ -97,7 +97,7 @@ begin
     begin
         -- Alapértékek
         ena <= '0';
-        wea <= '0';
+        wea <= "0";
         addra <= (others => '0');
         dina <= (others => '0');
         sample_data <= (others => '0');
@@ -105,13 +105,13 @@ begin
         case state is
             when WRITE =>
                 ena <= '1';
-                wea <= '1';
+                wea <= "1";
                 addra <= write_address;
                 dina <= write_data;
 
             when READ =>
                 ena <= '1';
-                wea <= '0';
+                wea <= "0";
                 addra <= read_address;
                 
             when READ_WAIT => 
@@ -122,7 +122,7 @@ begin
 
             when others =>
                 ena <= '0';
-                wea <= '0';
+                wea <= "0";
         end case;
     end process;
 

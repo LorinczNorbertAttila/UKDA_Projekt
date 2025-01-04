@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x0",
+      "boundary_crc": "0xE606FB3A6107BEEC",
       "device": "xc7a100tcsg324-1",
       "gen_directory": "../../../../project.gen/sources_1/bd/design_1",
       "name": "design_1",
@@ -14,7 +14,19 @@
       "audio_output_0": "",
       "play_controller_0": "",
       "sample_timer_0": "",
-      "bram_controller_0": ""
+      "bram_controller_0": "",
+      "clk_wiz": ""
+    },
+    "ports": {
+      "clk_100MHz": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "FREQ_HZ": {
+            "value": "100000000"
+          }
+        }
+      }
     },
     "components": {
       "blk_mem_gen_0": {
@@ -32,6 +44,9 @@
           },
           "Load_Init_File": {
             "value": "true"
+          },
+          "Operating_Mode_A": {
+            "value": "READ_FIRST"
           },
           "use_bram_block": {
             "value": "Stand_Alone"
@@ -62,6 +77,18 @@
               "ASSOCIATED_RESET": {
                 "value": "reset",
                 "value_src": "constant"
+              },
+              "FREQ_HZ": {
+                "value": "100000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_clk_out1",
+                "value_src": "ip_prop"
               }
             }
           },
@@ -104,6 +131,18 @@
               "ASSOCIATED_RESET": {
                 "value": "reset",
                 "value_src": "constant"
+              },
+              "FREQ_HZ": {
+                "value": "100000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_clk_out1",
+                "value_src": "ip_prop"
               }
             }
           },
@@ -135,6 +174,18 @@
               "ASSOCIATED_RESET": {
                 "value": "reset",
                 "value_src": "constant"
+              },
+              "FREQ_HZ": {
+                "value": "100000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_clk_out1",
+                "value_src": "ip_prop"
               }
             }
           },
@@ -169,6 +220,18 @@
               "ASSOCIATED_RESET": {
                 "value": "reset",
                 "value_src": "constant"
+              },
+              "FREQ_HZ": {
+                "value": "100000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_clk_out1",
+                "value_src": "ip_prop"
               }
             }
           },
@@ -221,7 +284,21 @@
             "direction": "O"
           },
           "wea": {
-            "direction": "O"
+            "direction": "O",
+            "left": "0",
+            "right": "0"
+          }
+        }
+      },
+      "clk_wiz": {
+        "vlnv": "xilinx.com:ip:clk_wiz:6.0",
+        "ip_revision": "13",
+        "xci_name": "design_1_clk_wiz_1",
+        "xci_path": "ip\\design_1_clk_wiz_1\\design_1_clk_wiz_1.xci",
+        "inst_hier_path": "clk_wiz",
+        "parameters": {
+          "USE_RESET": {
+            "value": "false"
           }
         }
       }
@@ -229,11 +306,12 @@
     "nets": {
       "Net": {
         "ports": [
+          "clk_wiz/clk_out1",
           "audio_output_0/clk",
           "sample_timer_0/clk",
           "play_controller_0/clk",
-          "bram_controller_0/clk",
-          "blk_mem_gen_0/clka"
+          "blk_mem_gen_0/clka",
+          "bram_controller_0/clk"
         ]
       },
       "blk_mem_gen_0_douta": {
@@ -272,10 +350,24 @@
           "blk_mem_gen_0/wea"
         ]
       },
+      "clk_100MHz_1": {
+        "ports": [
+          "clk_100MHz",
+          "clk_wiz/clk_in1"
+        ]
+      },
       "play_controller_0_enable": {
         "ports": [
           "play_controller_0/enable",
           "sample_timer_0/enable"
+        ]
+      },
+      "play_controller_0_reset": {
+        "ports": [
+          "play_controller_0/reset",
+          "sample_timer_0/reset",
+          "bram_controller_0/reset",
+          "audio_output_0/reset"
         ]
       },
       "sample_timer_0_sample_tick": {

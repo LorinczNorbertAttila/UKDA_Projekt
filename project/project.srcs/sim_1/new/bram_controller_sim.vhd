@@ -38,25 +38,96 @@ end bram_controller_sim;
 
 architecture Behavioral of bram_controller_sim is
 
-    signal clk : std_logic := '0';
-    signal reset : std_logic := '0';
-    signal sample_tick : std_logic := '0';
-    signal write_enable: std_logic := '0';
-    signal write_data : std_logic_vector(31 downto 0) := (others => '0');
-    signal write_address : std_logic_vector(12 downto 0) := (others => '0');
-    signal read_address : std_logic_vector(12 downto 0) := (others => '0');
-    signal douta : std_logic_vector(31 downto 0) := (others => '0');
-    signal sample_data : std_logic_vector(31 downto 0);
-    signal addra : std_logic_vector(12 downto 0);
-    signal dina : std_logic_vector(31 downto 0);
-    signal ena : std_logic;
-    signal wea : std_logic;
+ 
+    -- BRAM Controller Komponens
+    component bram_controller
+        port (
+            clk : in  STD_LOGIC;         
+            reset : in  STD_LOGIC;         
+            sample_tick : in  STD_LOGIC;         
+            write_enable : in  STD_LOGIC;        
+            write_data : in  STD_LOGIC_VECTOR(31 downto 0); 
+            write_address: in  STD_LOGIC_VECTOR(12 downto 0); 
+            read_address : in  STD_LOGIC_VECTOR(12 downto 0); 
+            douta : in  STD_LOGIC_VECTOR(31 downto 0); 
+            sample_data : out STD_LOGIC_VECTOR(31 downto 0); 
+            addra : out STD_LOGIC_VECTOR(12 downto 0); 
+            dina : out STD_LOGIC_VECTOR(31 downto 0); 
+            ena : out STD_LOGIC;         
+            wea : out STD_LOGIC_VECTOR(0 downto 0)
+        );
+    end component;
 
-    constant clk_period : time := 20 ns;
+    -- Block Memory Generator Komponens
+    component blk_mem_gen_0
+        port (
+            clka : in  STD_LOGIC;
+            ena : in  STD_LOGIC;
+            wea : in  STD_LOGIC_VECTOR(0 downto 0);
+            addra : in  STD_LOGIC_VECTOR(12 downto 0);
+            dina : in  STD_LOGIC_VECTOR(31 downto 0);
+            douta : out STD_LOGIC_VECTOR(31 downto 0)
+        );
+    end component;
+
+    -- Jelek
+    signal clk : STD_LOGIC := '0';
+    signal reset : STD_LOGIC := '1';
+    signal sample_tick : STD_LOGIC := '0';
+    signal write_enable : STD_LOGIC := '0';
+    signal write_data : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+    signal write_address: STD_LOGIC_VECTOR(12 downto 0) := (others => '0');
+    signal read_address : STD_LOGIC_VECTOR(12 downto 0) := (others => '0');
+    signal douta : STD_LOGIC_VECTOR(31 downto 0);
+    signal sample_data : STD_LOGIC_VECTOR(31 downto 0);
+    signal addra : STD_LOGIC_VECTOR(12 downto 0);
+    signal dina : STD_LOGIC_VECTOR(31 downto 0);
+    signal ena : STD_LOGIC;
+    signal wea : STD_LOGIC_VECTOR(0 downto 0);
+
+    -- BRAM jelek
+    signal bram_ena : STD_LOGIC;
+    signal bram_wea : STD_LOGIC_VECTOR(0 downto 0);
+    signal bram_addra : STD_LOGIC_VECTOR(12 downto 0);
+    signal bram_dina : STD_LOGIC_VECTOR(31 downto 0);
+    signal bram_douta : STD_LOGIC_VECTOR(31 downto 0);
+
+    -- Órajel periódus
+    constant clk_period : time := 10 ns;
 
 begin
 
-    clk_process: process
+    -- BRAM Controllert
+    controller: bram_controller
+        port map (
+            clk => clk,
+            reset => reset,
+            sample_tick => sample_tick,
+            write_enable => write_enable,
+            write_data => write_data,
+            write_address => write_address,
+            read_address => read_address,
+            douta => bram_douta,
+            sample_data => sample_data,
+            addra => bram_addra,
+            dina => bram_dina,
+            ena => bram_ena,
+            wea => bram_wea
+        );
+
+    -- Block Memory Generatort
+    bram: blk_mem_gen_0
+        port map (
+            clka => clk,
+            ena => bram_ena,
+            wea => bram_wea,
+            addra => bram_addra,
+            dina => bram_dina,
+            douta => bram_douta
+        );
+
+    -- Órajel generálás
+    clk_process : process
     begin
         while true loop
             clk <= '0';
@@ -66,51 +137,29 @@ begin
         end loop;
     end process;
 
-    controller: entity work.bram_controller
-        port map (
-            clk => clk,
-            reset => reset,
-            sample_tick => sample_tick,
-            write_enable => write_enable,
-            write_data => write_data,
-            write_address => write_address,
-            read_address => read_address,
-            douta => douta,
-            sample_data => sample_data,
-            addra => addra,
-            dina => dina,
-            ena => ena,
-            wea => wea
-        );
-
-    -- Teszt szekvencia
-    stimulus_process: process
+    -- Teszt folyamat
+    sim: process
     begin
-        -- Reset alkalmazása
+        -- Reset
         reset <= '1';
-        wait for 2 * clk_period;
-        reset <= '0';
-        
-        -- Olvasási teszt 1
-        read_address <= "0000000000001"; -- 1-es cím
-        sample_tick <= '1';
         wait for clk_period;
-        sample_tick <= '0';
+        reset <= '0';
         wait for clk_period;
 
-        -- Olvasási teszt 2
-        read_address <= "0000000000010"; -- 2-es cím
-        sample_tick <= '1';
-        wait for clk_period;
-        sample_tick <= '0';
-        wait for clk_period;
-        
-        -- Szimuláció vége
+        -- Olvasási m?velet
+        for i in 0 to 10 loop
+            sample_tick <= '1';
+            read_address <= STD_LOGIC_VECTOR(to_unsigned(i, 13));  -- Olvasási cím
+            wait for clk_period;
+            sample_tick <= '0';
+            wait for clk_period;
+            
+        end loop;
+
+        -- Teszt vége
         wait for 10 * clk_period;
-        wait;
     end process;
 
-end architecture Behavioral;
-
+end Behavioral;
 
 

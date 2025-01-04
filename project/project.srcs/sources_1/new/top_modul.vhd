@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -36,13 +37,14 @@ entity top_modul is
            play : in STD_LOGIC;
            stop : in STD_LOGIC;
            pause : in STD_LOGIC;
-           read_address : in STD_LOGIC_VECTOR (12 downto 0);
-           audio_out : out STD_LOGIC_VECTOR (31 downto 0));
+           read_address : out STD_LOGIC_VECTOR (12 downto 0);
+           audio_out : out STD_LOGIC_VECTOR (31 downto 0)); --multiplexelni
 end top_modul;
 
 architecture Behavioral of top_modul is
 
 -- Komponens deklarációk
+
     component blk_mem_gen_0
         port (
             clka : in  STD_LOGIC;
@@ -68,7 +70,7 @@ architecture Behavioral of top_modul is
             addra : out STD_LOGIC_VECTOR(12 downto 0);
             dina : out STD_LOGIC_VECTOR(31 downto 0);
             ena : out STD_LOGIC;
-            wea : out STD_LOGIC
+            wea : out STD_LOGIC_VECTOR(0 downto 0)
         );
     end component;
 
@@ -109,9 +111,28 @@ architecture Behavioral of top_modul is
     signal addra_signal : STD_LOGIC_VECTOR(12 downto 0);
     signal dina_signal : STD_LOGIC_VECTOR(31 downto 0);
     signal ena_signal : STD_LOGIC;
-    signal wea_signal : STD_LOGIC;
+    signal wea_signal : STD_LOGIC_VECTOR(0 downto 0);
+    signal read_address_counter : STD_LOGIC_VECTOR(12 downto 0) := (others => '0');
 
 begin
+
+    -- Számláló logika: növeli a read_address értékét sample tick-re
+    process (clk, reset_signal)
+    begin
+        if reset_signal = '1' then
+            read_address_counter <= (others => '0');  
+        elsif rising_edge(clk) then
+            if sample_tick = '1' then
+                if read_address_counter = "1111111111111" then
+                    read_address_counter <= (others => '0');  
+                else
+                    read_address_counter <= std_logic_vector(unsigned(read_address_counter) + 1);
+                end if;
+            end if;
+        end if;
+    end process;
+    
+    read_address <= read_address_counter;
 
     playing : play_controller
         port map (
@@ -139,24 +160,14 @@ begin
             write_enable => '0',
             write_data => (others => '0'),
             write_address => (others => '0'),
-            read_address => read_address,
+            read_address => read_address_counter,
             douta => douta_signal,
             sample_data => bram_sample_data,
             addra => addra_signal,
             dina => dina_signal,
             ena => ena_signal,
             wea => wea_signal
-        );
-        
-    bram : blk_mem_gen_0
-        port map (
-            clka => clk,
-            ena => ena_signal,
-            wea => wea_signal,
-            addra => addra_signal,
-            dina => dina_signal,
-            douta => douta_signal
-        );  
+        ); 
 
     audio : audio_output
         port map (
@@ -165,5 +176,13 @@ begin
             audio_out => audio_out
         );
 
-
+      bram : blk_mem_gen_0
+        port map (
+            clka => clk,
+            ena => ena_signal,
+            wea => wea_signal(0),
+            addra => addra_signal,
+            dina => dina_signal,
+            douta => douta_signal
+        );  
 end Behavioral;
