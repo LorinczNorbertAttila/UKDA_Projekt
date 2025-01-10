@@ -480,6 +480,7 @@ A modulok először is papíron lettek megtervezve, ami egy biztos alapot adott 
         end Behavioral;
     
   `top_modul`
+  
   A top_modulnak nem készült terv, mert csak a modulok összekapcsolása volt az eredeti terv, de ez kiegészült egy automatikus címgenerálással.
     
      Kész VHDL kód:
@@ -657,7 +658,7 @@ Két féle szimulációt hoztam létre, modulszintűt, és rendszerszintűt. A k
 
 **`bram_controller` szimuláció**
 
-![Screenshot (1)](https://github.com/user-attachments/assets/b34671dc-beef-4959-9414-6a7feb5a7bce)
+![Screenshot (1)](https://github.com/user-attachments/assets/aa270e66-90bb-409b-afaf-1c744ec958c7)
 
 Tesztbench:
 
