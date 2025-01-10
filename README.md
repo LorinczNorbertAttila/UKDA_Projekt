@@ -1034,6 +1034,7 @@ Tesztbench:
 # Könyvészet
 
  [Nexys A7 Reference Manual](https://digilent.com/reference/programmable-logic/nexys-a7/reference-manual?srsltid=AfmBOorPt-0aJN26dGuLbPsr7_2Sj_ORP7uKVFUMEOBppGcG8-5s55BR)
+ 
  [Brassai Sándor Tihamér - Újrakonfigurálható digitális áramkörök tervezési és tesztelési módszerei](https://real.mtak.hu/122602/1/Brassai%20Tihamer_UKDA_REAL.pdf)
 
 
