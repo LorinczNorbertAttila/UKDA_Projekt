@@ -124,6 +124,46 @@ A tervezés az egyik legfontosabb pontja egy ilyen projekt kialakításában, hi
 ## Modulok tervezései
 A modulok először is papíron lettek megtervezve, ami egy biztos alapot adott a VHDL kódok kialakításában. Ugyanakkor a projekt sokat fejlődött a tervezés szakasza óta, amit az alábbi pont nagyon jól szemléltet, a terv mellett megtalálható a Vivado környezetben írt kész kód is:
 
+### Állapotgépek magyarázata :
+
+**1. `play_controller` modul:**
+
+Ez az állapotgép vezérli az audio lejátszás folyamatát (indítás, megállítás, szüneteltetés).
+
+-   **`INIT`**: Az eszköz inicializálása. A `reset` jel aktív.
+-   **`RDY`**: Készenléti állapot. Vár a felhasználói parancsokra (`play`, `stop`).
+-   **`PLAYING`**: Lejátszás folyamatban (`enable` aktív).
+-   **`PAUSED`**: Lejátszás szüneteltetve (`enable` inaktív).
+-   **`STOPPING`**: Lejátszás leállítása (`enable` inaktív). Állapotváltás a `RESETTING` állapotra.
+-   **`RESETTING`**: Az állapotgép visszaállítása készenléti állapotba (`reset` aktív).
+
+
+ **2. `sample_timer` modul:**
+
+Ez az állapotgép az audio mintavételezéshez szükséges időzítést végzi.
+
+-   **`INIT`**: Inicializálás. Várja az `enable` jel aktiválását.
+-   **`RDY`**: Készen áll a számlálás indítására.
+-   **`COUNTING`**: A számláló növeli az értékét, amíg el nem éri a `max_count` értéket.
+-   **`TICK`**: Ha a számláló eléri a `max_count` értéket, egy `sample_tick` jelet generál. Ezután visszalép a `COUNTING` állapotba.
+
+
+ **3. `bram_controller` modul:**
+
+Ez a modul egy BRAM vezérlőt valósít meg, amely audio adatok olvasását és írását végzi.
+
+-   **`INIT`**: Az állapotgép inicializálása.
+-   **`IDLE`**: Nyugalmi állapot, várja a `write_enable` vagy `sample_tick` jelet.
+    -   Ha `write_enable` aktív, `WRITE` állapotba lép.
+    -   Ha `sample_tick` aktív, `READ` állapotba lép.
+-   **`WRITE`**: Adatok írása a BRAM-ba (`wea` aktív). Ezután visszalép az `IDLE` állapotba.
+-   **`READ`**: Adatok olvasásának indítása a BRAM-ból. Ezután `READ_WAIT` állapotba lép.
+-   **`READ_WAIT`**: Várakozás az olvasás eredményére.
+-   **`OUTPUT`**: Az olvasott adat továbbítása a `sample_data` kimenetre. Ezután visszalép az `IDLE` állapotba.
+
+
+###Tervezés és megírt kód:
+
 `audio_output`
 
 ![IMG_3585](https://github.com/user-attachments/assets/4c594161-a236-40b9-a5f3-eef307a3a490)
