@@ -1,6 +1,6 @@
 # Fedőlap
 
-**Projekt címe:** Hanglejátszó megvalosítása FPGA fejlesztő lap
+**Projekt címe:** Hanglejátszó megvalosítása FPGA fejlesztő lapon
 
 **Hallgató neve:** Lőrincz Norbert Attila
 
@@ -30,7 +30,7 @@
 
 # Projekt célja
 
-A projekt célja egy Nexys  A7-100T modellű FPGA-alapú hanglejátszó rendszer megvalósítása, amely képes digitális hangminták kezelésére és lejátszására, PWM alapú jelgenerálással. A rendszer magában foglalja a memóriaadatok vezérlését, időzítést és hangkimenet előállítását, mindez komplex állapotgépek kivitelezésével, amely a gördülékenyebb munkafolyamathoz járul hozzá.
+A projekt célja egy Nexys A7-100T modellű FPGA-alapú hanglejátszó rendszer megvalósítása, amely képes digitális hangminták kezelésére és lejátszására, PWM alapú jelgenerálással. A rendszer magában foglalja a memóriaadatok vezérlését, időzítést és hangkimenet előállítását, mindez komplex állapotgépek kivitelezésével, amely a gördülékenyebb munkafolyamathoz járul hozzá.
 
 # Követelmények
 
