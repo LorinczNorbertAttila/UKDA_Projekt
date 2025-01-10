@@ -2,5 +2,12 @@
 2020.2
 Oct 13 2023
 20:47:58
-C:/Diak/LorinczNorbert/UKDA/project/project.srcs/sim_1/new/bram_controller_sim.vhd,1734518836,vhdl,,,,bram_controller_sim,,,,,,,,
-C:/Diak/LorinczNorbert/UKDA/project/project.srcs/sources_1/new/bram_controller.vhd,1734518477,vhdl,,,,bram_controller,,,,,,,,
+C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.gen/sources_1/ip/blk_mem_gen_0/sim/blk_mem_gen_0.v,1736457061,verilog,,,,blk_mem_gen_0,,,,,,,,
+C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.sim/sim_1/behav/xsim/glbl.v,1697210495,verilog,,,,glbl,,,,,,,,
+C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sim_1/new/bram_controller_sim.vhd,1736466041,vhdl,,,,bram_controller_sim,,,,,,,,
+C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sim_1/new/top_modul_sim.vhd,1736475803,vhdl,,,,top_module_sim,,,,,,,,
+C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/audio_output.vhd,1735985950,vhdl,,,,audio_output,,,,,,,,
+C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/bram_controller.vhd,1736127274,vhdl,,,,bram_controller,,,,,,,,
+C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/play_controller.vhd,1736473204,vhdl,,,,play_controller,,,,,,,,
+C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/sample_timer.vhd,1735980905,vhdl,,,,sample_timer,,,,,,,,
+C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.srcs/sources_1/new/top_modul.vhd,1736473213,vhdl,,,,top_modul,,,,,,,,

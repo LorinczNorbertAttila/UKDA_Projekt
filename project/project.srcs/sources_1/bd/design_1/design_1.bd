@@ -37,7 +37,7 @@
         "inst_hier_path": "blk_mem_gen_0",
         "parameters": {
           "Coe_File": {
-            "value": "../../../../../../../sandela.coe"
+            "value": "../../../../../../../song.coe"
           },
           "Fill_Remaining_Memory_Locations": {
             "value": "false"
@@ -77,18 +77,6 @@
               "ASSOCIATED_RESET": {
                 "value": "reset",
                 "value_src": "constant"
-              },
-              "FREQ_HZ": {
-                "value": "100000000",
-                "value_src": "ip_prop"
-              },
-              "PHASE": {
-                "value": "0.0",
-                "value_src": "ip_prop"
-              },
-              "CLK_DOMAIN": {
-                "value": "/clk_wiz_clk_out1",
-                "value_src": "ip_prop"
               }
             }
           },
@@ -96,10 +84,11 @@
             "type": "rst",
             "direction": "I"
           },
-          "audio_out": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
+          "audio_pwm": {
+            "direction": "O"
+          },
+          "audio_sd": {
+            "direction": "O"
           }
         }
       },
@@ -131,18 +120,6 @@
               "ASSOCIATED_RESET": {
                 "value": "reset",
                 "value_src": "constant"
-              },
-              "FREQ_HZ": {
-                "value": "100000000",
-                "value_src": "ip_prop"
-              },
-              "PHASE": {
-                "value": "0.0",
-                "value_src": "ip_prop"
-              },
-              "CLK_DOMAIN": {
-                "value": "/clk_wiz_clk_out1",
-                "value_src": "ip_prop"
               }
             }
           },
@@ -220,18 +197,6 @@
               "ASSOCIATED_RESET": {
                 "value": "reset",
                 "value_src": "constant"
-              },
-              "FREQ_HZ": {
-                "value": "100000000",
-                "value_src": "ip_prop"
-              },
-              "PHASE": {
-                "value": "0.0",
-                "value_src": "ip_prop"
-              },
-              "CLK_DOMAIN": {
-                "value": "/clk_wiz_clk_out1",
-                "value_src": "ip_prop"
               }
             }
           },
@@ -307,11 +272,11 @@
       "Net": {
         "ports": [
           "clk_wiz/clk_out1",
-          "audio_output_0/clk",
           "sample_timer_0/clk",
-          "play_controller_0/clk",
           "blk_mem_gen_0/clka",
-          "bram_controller_0/clk"
+          "audio_output_0/clk",
+          "bram_controller_0/clk",
+          "play_controller_0/clk"
         ]
       },
       "blk_mem_gen_0_douta": {
@@ -366,8 +331,8 @@
         "ports": [
           "play_controller_0/reset",
           "sample_timer_0/reset",
-          "bram_controller_0/reset",
-          "audio_output_0/reset"
+          "audio_output_0/reset",
+          "bram_controller_0/reset"
         ]
       },
       "sample_timer_0_sample_tick": {

@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.2 (win64) Build 4029153 Fri Oct 13 20:14:34 MDT 2023
-| Date         : Wed Dec 18 14:23:39 2024
-| Host         : 309x6 running 64-bit major release  (build 9200)
+| Date         : Fri Jan 10 05:07:16 2025
+| Host         : DESKTOP-4Q6FTCR running 64-bit major release  (build 9200)
 | Command      : report_utilization -file top_modul_utilization_synth.rpt -pb top_modul_utilization_synth.pb
 | Design       : top_modul
 | Device       : xc7a100tcsg324-1
@@ -31,11 +31,11 @@ Table of Contents
 +-------------------------+------+-------+------------+-----------+-------+
 |        Site Type        | Used | Fixed | Prohibited | Available | Util% |
 +-------------------------+------+-------+------------+-----------+-------+
-| Slice LUTs*             |   58 |     0 |          0 |     63400 |  0.09 |
-|   LUT as Logic          |   58 |     0 |          0 |     63400 |  0.09 |
+| Slice LUTs*             |   36 |     0 |          0 |     63400 |  0.06 |
+|   LUT as Logic          |   36 |     0 |          0 |     63400 |  0.06 |
 |   LUT as Memory         |    0 |     0 |          0 |     19000 |  0.00 |
-| Slice Registers         |   37 |     0 |          0 |    126800 |  0.03 |
-|   Register as Flip Flop |   37 |     0 |          0 |    126800 |  0.03 |
+| Slice Registers         |   33 |     0 |          0 |    126800 |  0.03 |
+|   Register as Flip Flop |   33 |     0 |          0 |    126800 |  0.03 |
 |   Register as Latch     |    0 |     0 |          0 |    126800 |  0.00 |
 | F7 Muxes                |    0 |     0 |          0 |     31700 |  0.00 |
 | F8 Muxes                |    0 |     0 |          0 |     15850 |  0.00 |
@@ -59,7 +59,7 @@ Warning! LUT value is adjusted to account for LUT combining.
 | 0     |          Yes |           - |          Set |
 | 16    |          Yes |           - |        Reset |
 | 0     |          Yes |         Set |            - |
-| 21    |          Yes |       Reset |            - |
+| 17    |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -92,7 +92,7 @@ Warning! LUT value is adjusted to account for LUT combining.
 +-----------------------------+------+-------+------------+-----------+-------+
 |          Site Type          | Used | Fixed | Prohibited | Available | Util% |
 +-----------------------------+------+-------+------------+-----------+-------+
-| Bonded IOB                  |   49 |     0 |          0 |       210 | 23.33 |
+| Bonded IOB                  |    6 |     0 |          0 |       210 |  2.86 |
 | Bonded IPADs                |    0 |     0 |          0 |         2 |  0.00 |
 | PHY_CONTROL                 |    0 |     0 |          0 |         6 |  0.00 |
 | PHASER_REF                  |    0 |     0 |          0 |         6 |  0.00 |
@@ -148,16 +148,16 @@ Warning! LUT value is adjusted to account for LUT combining.
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| OBUF     |   45 |                  IO |
-| LUT4     |   37 |                 LUT |
-| FDRE     |   21 |        Flop & Latch |
-| LUT5     |   19 |                 LUT |
+| LUT4     |   20 |                 LUT |
+| FDRE     |   17 |        Flop & Latch |
+| LUT6     |   16 |                 LUT |
 | FDCE     |   16 |        Flop & Latch |
-| LUT6     |   15 |                 LUT |
+| LUT3     |    6 |                 LUT |
 | CARRY4   |    6 |          CarryLogic |
-| LUT3     |    4 |                 LUT |
 | IBUF     |    4 |                  IO |
-| LUT2     |    3 |                 LUT |
+| OBUF     |    2 |                  IO |
+| LUT5     |    2 |                 LUT |
+| LUT2     |    2 |                 LUT |
 | LUT1     |    2 |                 LUT |
 | BUFG     |    1 |               Clock |
 +----------+------+---------------------+

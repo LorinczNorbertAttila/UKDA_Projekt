@@ -1,30 +1,30 @@
 {
    "ActiveEmotionalView":"Default View",
    "Default View_ScaleFactor":"0.813322",
-   "Default View_TopLeft":"386,-31",
+   "Default View_TopLeft":"389,102",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.5.8 2022-09-21 7111 VDI=41 GEI=38 GUI=JA:10.0
 #  -string -flagsOSRD
 preplace port port-id_clk_100MHz -pg 1 -lvl 0 -x 0 -y 130 -defaultsOSRD
-preplace inst blk_mem_gen_0 -pg 1 -lvl 4 -x 1010 -y 290 -defaultsOSRD
-preplace inst audio_output_0 -pg 1 -lvl 3 -x 680 -y 170 -defaultsOSRD
+preplace inst blk_mem_gen_0 -pg 1 -lvl 4 -x 1030 -y 290 -defaultsOSRD
+preplace inst audio_output_0 -pg 1 -lvl 3 -x 690 -y 170 -defaultsOSRD
 preplace inst play_controller_0 -pg 1 -lvl 1 -x 120 -y 290 -defaultsOSRD
 preplace inst sample_timer_0 -pg 1 -lvl 2 -x 360 -y 280 -defaultsOSRD
-preplace inst bram_controller_0 -pg 1 -lvl 3 -x 680 -y 390 -defaultsOSRD
+preplace inst bram_controller_0 -pg 1 -lvl 3 -x 690 -y 390 -defaultsOSRD
 preplace inst clk_wiz -pg 1 -lvl 1 -x 120 -y 130 -defaultsOSRD
-preplace netloc Net 1 0 4 20 380 220 170 500 250 860
-preplace netloc blk_mem_gen_0_douta 1 2 2 510 260 880
-preplace netloc bram_controller_0_addra 1 3 1 870 250n
-preplace netloc bram_controller_0_dina 1 3 1 890 290n
-preplace netloc bram_controller_0_ena 1 3 1 900 330n
-preplace netloc bram_controller_0_sample_data 1 2 2 510 90 850
-preplace netloc bram_controller_0_wea 1 3 1 910 350n
+preplace netloc Net 1 0 4 20 380 220 170 510 250 870
+preplace netloc blk_mem_gen_0_douta 1 2 2 520 260 890
+preplace netloc bram_controller_0_addra 1 3 1 880 250n
+preplace netloc bram_controller_0_dina 1 3 1 900 290n
+preplace netloc bram_controller_0_ena 1 3 1 910 330n
+preplace netloc bram_controller_0_sample_data 1 2 2 520 90 860
+preplace netloc bram_controller_0_wea 1 3 1 920 350n
 preplace netloc clk_100MHz_1 1 0 1 N 130
 preplace netloc play_controller_0_enable 1 1 1 N 280
-preplace netloc play_controller_0_reset 1 1 2 240J 360 480
-preplace netloc sample_timer_0_sample_tick 1 2 1 490 280n
-levelinfo -pg 1 0 120 360 680 1010 1110
-pagesize -pg 1 -db -bbox -sgen -130 -60 1110 520
+preplace netloc play_controller_0_reset 1 1 2 240J 360 490
+preplace netloc sample_timer_0_sample_tick 1 2 1 500 280n
+levelinfo -pg 1 0 120 360 690 1030 1130
+pagesize -pg 1 -db -bbox -sgen -130 -60 1130 520
 "
 }
 {

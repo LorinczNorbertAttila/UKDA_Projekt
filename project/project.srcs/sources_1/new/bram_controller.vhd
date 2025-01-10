@@ -36,7 +36,7 @@ entity bram_controller is
         addra : out STD_LOGIC_VECTOR(12 downto 0); 
         dina : out STD_LOGIC_VECTOR(31 downto 0); 
         ena : out STD_LOGIC;         
-        wea  : out STD_LOGIC_VECTOR(0 downto 0));
+        wea  : out STD_LOGIC_VECTOR(0 DOWNTO 0));
 end entity BRAM_Controller;
 
 architecture Behavioral of BRAM_Controller is

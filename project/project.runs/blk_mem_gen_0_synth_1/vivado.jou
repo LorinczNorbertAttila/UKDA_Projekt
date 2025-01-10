@@ -3,12 +3,12 @@
 # SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
 # IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
 # SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
-# Start of session at: Wed Dec 18 14:14:12 2024
-# Process ID: 6928
-# Current directory: C:/Diak/LorinczNorbert/UKDA/project/project.runs/blk_mem_gen_0_synth_1
+# Start of session at: Thu Jan  9 23:11:05 2025
+# Process ID: 11560
+# Current directory: C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.runs/blk_mem_gen_0_synth_1
 # Command line: vivado.exe -log blk_mem_gen_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source blk_mem_gen_0.tcl
-# Log file: C:/Diak/LorinczNorbert/UKDA/project/project.runs/blk_mem_gen_0_synth_1/blk_mem_gen_0.vds
-# Journal file: C:/Diak/LorinczNorbert/UKDA/project/project.runs/blk_mem_gen_0_synth_1\vivado.jou
-# Running On: 309x6, OS: Windows, CPU Frequency: 2904 MHz, CPU Physical cores: 6, Host memory: 16949 MB
+# Log file: C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.runs/blk_mem_gen_0_synth_1/blk_mem_gen_0.vds
+# Journal file: C:/Uni/Ujrakonfiguralhato digitalis aramkorok/7.felev/UKDA_Projekt/project/project.runs/blk_mem_gen_0_synth_1\vivado.jou
+# Running On: DESKTOP-4Q6FTCR, OS: Windows, CPU Frequency: 3094 MHz, CPU Physical cores: 16, Host memory: 16989 MB
 #-----------------------------------------------------------
 source blk_mem_gen_0.tcl -notrace

@@ -43,7 +43,7 @@ end play_controller;
 architecture Behavioral of play_controller is
 
     -- Állapotok típusa
-    type state_type is (INIT, RDY, IDLE, PLAYING, STOPPING, PAUSED, RESETTING);
+    type state_type is (INIT, RDY, PLAYING, STOPPING, PAUSED, RESETTING);
     signal current_state, next_state : state_type;
 
 begin
@@ -74,16 +74,7 @@ begin
                 elsif stop = '1' then
                     next_state <= RESETTING;
                 else
-                    next_state <= IDLE;
-                end if;
-    
-            when IDLE =>
-                if play = '1' then
-                    next_state <= PLAYING;
-                elsif stop = '1' then
-                    next_state <= RESETTING;
-                else
-                    next_state <= IDLE;
+                    next_state <= RDY;
                 end if;
     
             when PLAYING =>

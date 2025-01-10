@@ -142,6 +142,7 @@ begin
     begin
         -- Reset
         reset <= '1';
+        wait for 5 * clk_period;
         wait for clk_period;
         reset <= '0';
         wait for clk_period;

@@ -37,8 +37,8 @@ entity top_modul is
            play : in STD_LOGIC;
            stop : in STD_LOGIC;
            pause : in STD_LOGIC;
-           read_address : out STD_LOGIC_VECTOR (12 downto 0);
-           audio_out : out STD_LOGIC_VECTOR (31 downto 0)); --multiplexelni
+           audio_pwm : out STD_LOGIC;
+           audio_sd : out STD_LOGIC);
 end top_modul;
 
 architecture Behavioral of top_modul is
@@ -49,10 +49,10 @@ architecture Behavioral of top_modul is
         port (
             clka : in  STD_LOGIC;
             ena : in  STD_LOGIC;
-            wea : in  STD_LOGIC;
-            addra : in  STD_LOGIC_VECTOR(12 downto 0);
-            dina : in  STD_LOGIC_VECTOR(31 downto 0);
-            douta : out STD_LOGIC_VECTOR(31 downto 0)
+            wea : in  STD_LOGIC_VECTOR(0 DOWNTO 0);
+            addra : in  STD_LOGIC_VECTOR(12 DOWNTO 0);
+            dina : in  STD_LOGIC_VECTOR(31 DOWNTO 0);
+            douta : out STD_LOGIC_VECTOR(31 DOWNTO 0)
         );
     end component;
     
@@ -62,15 +62,15 @@ architecture Behavioral of top_modul is
             reset : in  STD_LOGIC;
             sample_tick : in  STD_LOGIC;
             write_enable : in  STD_LOGIC;
-            write_data : in  STD_LOGIC_VECTOR(31 downto 0);
-            write_address: in  STD_LOGIC_VECTOR(12 downto 0);
-            read_address : in  STD_LOGIC_VECTOR(12 downto 0);
-            douta : in  STD_LOGIC_VECTOR(31 downto 0);
-            sample_data : out STD_LOGIC_VECTOR(31 downto 0);
-            addra : out STD_LOGIC_VECTOR(12 downto 0);
-            dina : out STD_LOGIC_VECTOR(31 downto 0);
+            write_data : in  STD_LOGIC_VECTOR(31 DOWNTO 0);
+            write_address: in  STD_LOGIC_VECTOR(12 DOWNTO 0);
+            read_address : in  STD_LOGIC_VECTOR(12 DOWNTO 0);
+            douta : in  STD_LOGIC_VECTOR(31 DOWNTO 0);
+            sample_data : out STD_LOGIC_VECTOR(31 DOWNTO 0);
+            addra : out STD_LOGIC_VECTOR(12 DOWNTO 0);
+            dina : out STD_LOGIC_VECTOR(31 DOWNTO 0);
             ena : out STD_LOGIC;
-            wea : out STD_LOGIC_VECTOR(0 downto 0)
+            wea : out STD_LOGIC_VECTOR(0 DOWNTO 0)
         );
     end component;
 
@@ -85,9 +85,11 @@ architecture Behavioral of top_modul is
 
     component audio_output
         port (
-            sample_data : in  STD_LOGIC_VECTOR(31 downto 0);
+            sample_data : in  STD_LOGIC_VECTOR(31 DOWNTO 0);
             clk : in  STD_LOGIC;
-            audio_out : out STD_LOGIC_VECTOR(31 downto 0)
+            reset: in STD_LOGIC;
+            audio_pwm : out STD_LOGIC;
+            audio_sd : out STD_LOGIC
         );
     end component;
 
@@ -105,14 +107,15 @@ architecture Behavioral of top_modul is
     -- Bels? jelek
     signal enable_signal : STD_LOGIC;
     signal reset_signal : STD_LOGIC;
-    signal sample_tick : STD_LOGIC;
-    signal bram_sample_data : STD_LOGIC_VECTOR(31 downto 0);
-    signal douta_signal : STD_LOGIC_VECTOR(31 downto 0);
-    signal addra_signal : STD_LOGIC_VECTOR(12 downto 0);
-    signal dina_signal : STD_LOGIC_VECTOR(31 downto 0);
+    signal sample_tick_signal : STD_LOGIC;
+    signal bram_sample_data : STD_LOGIC_VECTOR(31 DOWNTO 0);
+    signal douta_signal : STD_LOGIC_VECTOR(31 DOWNTO 0);
+    signal read_address_signal : STD_LOGIC_VECTOR (12 DOWNTO 0);
+    signal addra_signal : STD_LOGIC_VECTOR(12 DOWNTO 0);
+    signal dina_signal : STD_LOGIC_VECTOR(31 DOWNTO 0);
     signal ena_signal : STD_LOGIC;
-    signal wea_signal : STD_LOGIC_VECTOR(0 downto 0);
-    signal read_address_counter : STD_LOGIC_VECTOR(12 downto 0) := (others => '0');
+    signal wea_signal : STD_LOGIC_VECTOR(0 DOWNTO 0);
+    signal read_address_counter : STD_LOGIC_VECTOR(12 DOWNTO 0) := (others => '0');
 
 begin
 
@@ -122,7 +125,7 @@ begin
         if reset_signal = '1' then
             read_address_counter <= (others => '0');  
         elsif rising_edge(clk) then
-            if sample_tick = '1' then
+            if sample_tick_signal = '1' then
                 if read_address_counter = "1111111111111" then
                     read_address_counter <= (others => '0');  
                 else
@@ -132,8 +135,9 @@ begin
         end if;
     end process;
     
-    read_address <= read_address_counter;
+    read_address_signal <= read_address_counter;
 
+    -- Play controller kapcsolás
     playing : play_controller
         port map (
             play => play,
@@ -144,23 +148,25 @@ begin
             reset => reset_signal
         );
 
+    -- Sample timer kapcsolás
     timer : sample_timer
         port map (
             clk => clk,
             enable => enable_signal,
             reset => reset_signal,
-            sample_tick => sample_tick
+            sample_tick => sample_tick_signal
         );
 
+    -- BRAM controller kapcsolás
     read : bram_controller
         port map (
             clk => clk,
             reset => reset_signal,
-            sample_tick => sample_tick,
+            sample_tick => sample_tick_signal,
             write_enable => '0',
             write_data => (others => '0'),
             write_address => (others => '0'),
-            read_address => read_address_counter,
+            read_address => read_address_signal,
             douta => douta_signal,
             sample_data => bram_sample_data,
             addra => addra_signal,
@@ -169,20 +175,25 @@ begin
             wea => wea_signal
         ); 
 
+    -- Audio output kapcsolás
     audio : audio_output
         port map (
             sample_data => bram_sample_data,
             clk => clk,
-            audio_out => audio_out
+            reset => reset_signal,
+            audio_pwm => audio_pwm,
+            audio_sd => audio_sd
         );
 
-      bram : blk_mem_gen_0
+    -- BRAM modul kapcsolás
+    bram : blk_mem_gen_0
         port map (
             clka => clk,
             ena => ena_signal,
-            wea => wea_signal(0),
+            wea => wea_signal,
             addra => addra_signal,
             dina => dina_signal,
             douta => douta_signal
         );  
+
 end Behavioral;

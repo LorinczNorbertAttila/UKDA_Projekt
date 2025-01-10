@@ -1,8 +1,8 @@
 
 { 
-    crc :  5004505658850608352  , 
+    crc :  2901287410163880374  , 
     ccp_crc :  0  , 
-    cmdline : " --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip -L xpm --snapshot bram_controller_sim_behav xil_defaultlib.bram_controller_sim" , 
+    cmdline : " --incr --debug typical --relax --mt 2 -L xil_defaultlib -L blk_mem_gen_v8_4_7 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot bram_controller_sim_behav xil_defaultlib.bram_controller_sim xil_defaultlib.glbl" , 
     buildDate : "Oct 13 2023" , 
     buildTime : "20:47:58" , 
     linkCmd : "C:\\Xilinx\\Vivado\\2023.2\\data\\..\\tps\\mingw\\6.2.0\\win64.o\\nt\\bin\\gcc.exe -Wa,-W  -O -Wl,--stack,104857600 -o \"xsim.dir/bram_controller_sim_behav/xsimk.exe\"   \"xsim.dir/bram_controller_sim_behav/obj/xsim_0.win64.obj\" \"xsim.dir/bram_controller_sim_behav/obj/xsim_1.win64.obj\" -L\"C:\\Xilinx\\Vivado\\2023.2\\lib\\win64.o\" -lrdi_simulator_kernel   -lrdi_simbridge_kernel" , 

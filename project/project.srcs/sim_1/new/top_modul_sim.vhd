@@ -38,71 +38,187 @@ end top_module_sim;
 
 architecture Behavioral of top_module_sim is
 
-    component top_module
+    -- Komponens deklarációk
+    component blk_mem_gen_0
         port (
-            clk : in  STD_LOGIC;
-            reset : in  STD_LOGIC;
-            play : in  STD_LOGIC;
-            stop : in  STD_LOGIC;
-            pause : in STD_LOGIC;
-            audio_out : out STD_LOGIC_VECTOR(31 downto 0)
+            clka : in  STD_LOGIC;
+            ena : in  STD_LOGIC;
+            wea : in  STD_LOGIC_VECTOR(0 DOWNTO 0);
+            addra : in  STD_LOGIC_VECTOR(12 downto 0);
+            dina : in  STD_LOGIC_VECTOR(31 downto 0);
+            douta : out STD_LOGIC_VECTOR(31 downto 0)
         );
     end component;
 
-    signal clk_sim : STD_LOGIC := '0';
-    signal reset_sim : STD_LOGIC := '0';
-    signal play_sim : STD_LOGIC := '0';
-    signal stop_sim : STD_LOGIC := '0';
-    signal pause_sim : STD_LOGIC := '0';
-    signal audio_out_sim : STD_LOGIC_VECTOR(31 downto 0);
+    component bram_controller
+        port (
+            clk : in  STD_LOGIC;
+            reset : in  STD_LOGIC;
+            sample_tick : in  STD_LOGIC;
+            write_enable : in  STD_LOGIC;
+            write_data : in  STD_LOGIC_VECTOR(31 downto 0);
+            write_address: in  STD_LOGIC_VECTOR(12 downto 0);
+            read_address : in  STD_LOGIC_VECTOR(12 downto 0);
+            douta : in  STD_LOGIC_VECTOR(31 downto 0);
+            sample_data : out STD_LOGIC_VECTOR(31 downto 0);
+            addra : out STD_LOGIC_VECTOR(12 downto 0);
+            dina : out STD_LOGIC_VECTOR(31 downto 0);
+            ena : out STD_LOGIC;
+            wea : out STD_LOGIC_VECTOR(0 downto 0)
+        );
+    end component;
 
+    component sample_timer
+        port (
+            clk : in  STD_LOGIC;
+            enable : in  STD_LOGIC;
+            reset : in STD_LOGIC;
+            sample_tick : out STD_LOGIC
+        );
+    end component;
+
+    component audio_output
+        port (
+            sample_data : in  STD_LOGIC_VECTOR(31 downto 0);
+            clk : in  STD_LOGIC;
+            reset: in STD_LOGIC;
+            audio_pwm : out STD_LOGIC;
+            audio_sd : out STD_LOGIC
+        );
+    end component;
+
+    component play_controller
+        port (
+            play : in  STD_LOGIC;
+            stop : in  STD_LOGIC;
+            pause : in  STD_LOGIC;
+            clk : in  STD_LOGIC;
+            enable : out STD_LOGIC;
+            reset  : out STD_LOGIC
+        );
+    end component;
+
+    -- Jelek a teszthez
+    signal clk : STD_LOGIC := '0';
+    signal play : STD_LOGIC := '0';
+    signal stop : STD_LOGIC := '0';
+    signal pause : STD_LOGIC := '0';
+    signal sample_tick : STD_LOGIC := '0';
+    signal enable_signal : STD_LOGIC;
+    signal reset_signal : STD_LOGIC;
+    signal bram_sample_data : STD_LOGIC_VECTOR(31 downto 0);
+    signal douta_signal : STD_LOGIC_VECTOR(31 downto 0);
+    signal read_address_signal : STD_LOGIC_VECTOR(12 downto 0);
+    signal addra_signal : STD_LOGIC_VECTOR(12 downto 0);
+    signal dina_signal : STD_LOGIC_VECTOR(31 downto 0);
+    signal ena_signal : STD_LOGIC;
+    signal wea_signal : STD_LOGIC_VECTOR(0 DOWNTO 0);
+    signal audio_pwm : STD_LOGIC;
+    signal audio_sd : STD_LOGIC;
+
+    -- Órajel paraméterei
     constant clk_period : time := 10 ns;
+    constant sample_tick_period : time := 100 ns;
 
 begin
 
-    UUT: top_module
-        port map (
-            clk => clk_sim,
-            reset => reset_sim,
-            play => play_sim,
-            stop => stop_sim,
-            pause => pause_sim,
-            audio_out => audio_out_sim
-        );
-
+    -- Órajel generátor
     clk_process : process
     begin
-        while true loop
-            clk_sim <= '0';
+        while True loop
+            clk <= '0';
             wait for clk_period / 2;
-            clk_sim <= '1';
+            clk <= '1';
             wait for clk_period / 2;
         end loop;
     end process;
+    
 
-    stimulus_process : process
+    -- Komponensek összekötése
+
+    playing : play_controller
+        port map (
+            play => play,
+            stop => stop,
+            pause => pause,
+            clk => clk,
+            enable => enable_signal,
+            reset => reset_signal
+        );
+
+    timer : sample_timer
+        port map (
+            clk => clk,
+            enable => enable_signal,
+            reset => reset_signal,
+            sample_tick => sample_tick
+        );
+
+    read : bram_controller
+        port map (
+            clk => clk,
+            reset => reset_signal,
+            sample_tick => sample_tick,
+            write_enable => '0',
+            write_data => (others => '0'),
+            write_address => (others => '0'),
+            read_address => read_address_signal,
+            douta => douta_signal,
+            sample_data => bram_sample_data,
+            addra => addra_signal,
+            dina => dina_signal,
+            ena => ena_signal,
+            wea => wea_signal
+        ); 
+
+    audio : audio_output
+        port map (
+            sample_data => bram_sample_data,
+            clk => clk,
+            reset => reset_signal,
+            audio_pwm => audio_pwm,
+            audio_sd => audio_sd
+        );
+
+    bram : blk_mem_gen_0
+        port map (
+            clka => clk,
+            ena => ena_signal,
+            wea => wea_signal,
+            addra => addra_signal,
+            dina => dina_signal,
+            douta => douta_signal
+        );
+
+    -- Szimulációs forgatókönyv
+    sim_proc: process
     begin
-        reset_sim <= '1';
+        -- Reset
         wait for 20 ns;
-        reset_sim <= '0';
 
-        play_sim <= '1';
-        wait for 100 ns;
-        
-        pause_sim <= '1';
+        -- Play
+        play <= '1';
         wait for 50 ns;
+        play <= '0';
         
-        play_sim <= '1';
-        wait for 50 ns;
-        
-        stop_sim <= '1';
-        wait for 50 ns;
+        --sample_tick <= '0';
+        --wait for clk_period / 2;
+        --sample_tick <= '1';
+        --wait for clk_period / 2;
 
-        play_sim <= '0';
-        stop_sim <= '0';
-        wait for 100 ns;
+        -- Pause
+        pause <= '1';
+        wait for 50 ns;
+        pause <= '0';
 
-        assert false report "Szimuláció vége" severity failure;
+        -- Stop
+        stop <= '1';
+        wait for 50 ns;
+        stop <= '0';
+
+        -- Vége
+        wait for 1 ms;
+        assert false report "End of simulation" severity failure;
     end process;
 
 end Behavioral;
