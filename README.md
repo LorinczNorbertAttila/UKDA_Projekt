@@ -162,7 +162,7 @@ Ez a modul egy BRAM vezérlőt valósít meg, amely audio adatok olvasását és
 -   **`OUTPUT`**: Az olvasott adat továbbítása a `sample_data` kimenetre. Ezután visszalép az `IDLE` állapotba.
 
 
-###Tervezés és megírt kód:
+### Tervezés és megírt kód:
 
 `audio_output`
 
